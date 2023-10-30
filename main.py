@@ -111,27 +111,145 @@ user_baja_btn.grid(column=5, columnspan=1, row=6, padx=10, pady=10, sticky=tk.E)
 #-------------------------------------------------------ALUMNOS ----------------------------------------------------
 pestana_alumnos = ttk.Frame(pestanas)
 pestanas.add(pestana_alumnos, text="Alumnos")
-pestanas.tab(2, state="disabled")
+pestanas.tab(2, state="normal")
+
+#- - - - - - - - - - - - - - - - - - - - - - - Entryes y etiquetas - - - - - - - - - - - - - - - - - - - -
+alumno_code_label = tk.Label(pestana_alumnos, text="Ingrese codigo de usuario: ")
+alumno_id_label = tk.Label(pestana_alumnos, text="ID:")
+alumno_nombre_label = tk.Label(pestana_alumnos, text="Nombre: ")
+alumno_apellidoP_label = tk.Label(pestana_alumnos, text="Apellido Paterno: ")
+alumno_apellidoM_label = tk.Label(pestana_alumnos, text="Apellido Materno: ")
+alumno_email_label = tk.Label(pestana_alumnos, text="Email: ")
+alumno_estado_label = tk.Label(pestana_alumnos, text="Estado: ")
+alumno_fechanac_label = tk.Label(pestana_alumnos, text="Fecha de Nacimiento: ")
+alumno_carrera_label = tk.Label(pestana_alumnos, text="Carrera: ")
+alumno_materia_label = tk.Label(pestana_alumnos, text="Materia: ")
+alumno_code_entry = tk.Entry(pestana_alumnos)
+alumno_id_entry = tk.Entry(pestana_alumnos, state="disabled")
+alumno_nombre_entry = tk.Entry(pestana_alumnos, state="disabled")
+alumno_apellidoP_entry = tk.Entry(pestana_alumnos, state="disabled")
+alumno_apellidoM_entry = tk.Entry(pestana_alumnos, state="disabled")
+alumno_email_entry = tk.Entry(pestana_alumnos, state="disabled")
+alumno_username_entry = tk.Entry(pestana_alumnos, state="disabled")
+alumno_password_entry = tk.Entry(pestana_alumnos, state="disabled", show="•")
+alumno_carrera_selection = tk.StringVar(main)
+alumno_carrera_options = ("Administrador", "Maestro", "Alumno")
+alumno_carrera_optionMenu = tk.OptionMenu(pestana_alumnos, alumno_carrera_selection, *alumno_carrera_options)
+alumno_carrera_optionMenu.configure(state="normal")
+alumno_materia_selection = tk.StringVar(main)
+alumno_materia_options = ("Administrador", "Maestro", "Alumno")
+alumno_materia_optionMenu = tk.OptionMenu(pestana_alumnos, alumno_materia_selection, *alumno_materia_options)
+alumno_materia_optionMenu.configure(state="normal")
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - Botones - - - - - - - - - - - - - - - - - - - - - - -
+alumno_buscar_btn = tk.Button(pestana_alumnos, text="Buscar")
+alumno_buscar_btn.configure(width=10)
+alumno_nuevo_btn = tk.Button(pestana_alumnos, text="Nuevo")
+alumno_nuevo_btn.configure(width=10)
+alumno_guardar_btn = tk.Button(pestana_alumnos, text="Guardar")
+alumno_guardar_btn.configure(width=10, state="disabled")
+alumno_cancelar_btn = tk.Button(pestana_alumnos, text="Cancelar")
+alumno_cancelar_btn.configure(width=10, state="disabled")
+alumno_editar_btn = tk.Button(pestana_alumnos, text="Editar")
+alumno_editar_btn.configure(width=10, state="disabled")
+alumno_baja_btn = tk.Button(pestana_alumnos, text="Baja")
+alumno_baja_btn.configure(width=10, state="disabled")
+#- - - - - - - - - - - - - - - - - - - - - - - - - - Posiciones - - - - - - - - - - - - - - - - - - - - - - -
+
+alumno_code_label.grid(column=1, columnspan=2, row=0, padx=10, pady=10, sticky=tk.E)
+alumno_id_label.grid(column=0, columnspan=1, row=1, padx=10, pady=10, sticky=tk.E)
+alumno_nombre_label.grid(column=0, columnspan=1, row=2, padx=10, pady=10, sticky=tk.E)
+alumno_apellidoP_label.grid(column=0, columnspan=1, row=3, padx=10, pady=10, sticky=tk.E)
+alumno_apellidoM_label.grid(column=0, columnspan=1, row=4, padx=10, pady=10, sticky=tk.E)
+alumno_email_label.grid(column=0, columnspan=1, row=5, padx=10, pady=10, sticky=tk.E)
+alumno_estado_label.grid(column=2, columnspan=2, row=1, padx=10, pady=10, sticky=tk.E)
+alumno_carrera_label.grid(column=3, columnspan=1, row=2, padx=10, pady=10, sticky=tk.E)
+alumno_materia_label.grid(column=3, columnspan=1, row=3, padx=10, pady=10, sticky=tk.E)
+alumno_code_entry.grid(column=3, columnspan=2, row=0, padx=10, pady=10, sticky=tk.W)
+alumno_code_entry.configure(width=30)
+alumno_id_entry.grid(column=1, columnspan=1, row=1, padx=10, pady=10, sticky=tk.W)
+alumno_id_entry.configure(width=15)
+alumno_nombre_entry.grid(column=1, columnspan=2, row=2, padx=10, pady=10, sticky=tk.W)
+alumno_nombre_entry.configure(width=30)
+alumno_apellidoP_entry.grid(column=1, columnspan=2, row=3, padx=10, pady=10, sticky=tk.W)
+alumno_apellidoP_entry.configure(width=30)
+alumno_apellidoM_entry.grid(column=1, columnspan=2, row=4, padx=10, pady=10, sticky=tk.W)
+alumno_apellidoM_entry.configure(width=30)
+alumno_email_entry.grid(column=1, columnspan=2, row=5, padx=10, pady=10, sticky=tk.W)
+alumno_email_entry.configure(width=30)
+alumno_username_entry.grid(column=4, columnspan=2, row=1, padx=10, pady=10, sticky=tk.W)
+alumno_username_entry.configure(width=30)
+alumno_password_entry.grid(column=4, columnspan=2, row=2, padx=10, pady=10, sticky=tk.W)
+alumno_password_entry.configure(width=30)
+alumno_carrera_optionMenu.grid(column=4, columnspan=1, row=3, padx=10, pady=10, sticky=tk.E)
+alumno_carrera_optionMenu.configure(width=8)
+alumno_buscar_btn.grid(column=5, columnspan=1, row=0, padx=10, pady=10, sticky=tk.E)
+alumno_nuevo_btn.grid(column=1, columnspan=1, row=6, padx=10, pady=10, sticky=tk.E)
+alumno_guardar_btn.grid(column=2, columnspan=1, row=6, padx=10, pady=10, sticky=tk.E)
+alumno_cancelar_btn.grid(column=3, columnspan=1, row=6, padx=10, pady=10, sticky=tk.E)
+alumno_editar_btn.grid(column=4, columnspan=1, row=6, padx=10, pady=10, sticky=tk.E)
+alumno_baja_btn.grid(column=5, columnspan=1, row=6, padx=10, pady=10, sticky=tk.E)
+
 #-------------------------------------------------------MAESTROS ---------------------------------------------------
 pestana_maestros = ttk.Frame(pestanas)
 pestanas.add(pestana_maestros, text="Maestros")
 pestanas.tab(3, state="disabled")
+#- - - - - - - - - - - - - - - - - - - - - - - Entries y etiquetas - - - - - - - - - - - - - - - - - - - -
+
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - Botones - - - - - - - - - - - - - - - - - - - - - - -
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - Posiciones - - - - - - - - - - - - - - - - - - - - - - -
+
+
 #-------------------------------------------------------MATERIAS ---------------------------------------------------
 pestana_materias = ttk.Frame(pestanas)
 pestanas.add(pestana_materias, text="Materias")
 pestanas.tab(4, state="disabled")
+#- - - - - - - - - - - - - - - - - - - - - - - Entries y etiquetas - - - - - - - - - - - - - - - - - - - -
+
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - Botones - - - - - - - - - - - - - - - - - - - - - - -
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - Posiciones - - - - - - - - - - - - - - - - - - - - - - -
+
+
 #--------------------------------------------------------GRUPOS ----------------------------------------------------
 pestana_grupos = ttk.Frame(pestanas)
 pestanas.add(pestana_grupos, text="Grupos")
 pestanas.tab(5, state="disabled")
+#- - - - - - - - - - - - - - - - - - - - - - - Entries y etiquetas - - - - - - - - - - - - - - - - - - - -
+
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - Botones - - - - - - - - - - - - - - - - - - - - - - -
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - Posiciones - - - - - - - - - - - - - - - - - - - - - - -
+
+
 #--------------------------------------------------------HORARIO ---------------------------------------------------
 pestana_horario = ttk.Frame(pestanas)
 pestanas.add(pestana_horario, text="Horario")
 pestanas.tab(6, state="disabled")
+#- - - - - - - - - - - - - - - - - - - - - - - Entries y etiquetas - - - - - - - - - - - - - - - - - - - -
+
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - Botones - - - - - - - - - - - - - - - - - - - - - - -
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - Posiciones - - - - - - - - - - - - - - - - - - - - - - -
+
+
 #---------------------------------------------------------SALON ----------------------------------------------------
 pestana_salon = ttk.Frame(pestanas)
 pestanas.add(pestana_salon, text="Salón")
 pestanas.tab(7, state="disabled")
+#- - - - - - - - - - - - - - - - - - - - - - - Entries y etiquetas - - - - - - - - - - - - - - - - - - - -
+
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - Botones - - - - - - - - - - - - - - - - - - - - - - -
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - Posiciones - - - - - - - - - - - - - - - - - - - - - - -
+
+
 #--------------------------------------------------------CARRERA ---------------------------------------------------
 pestana_carrera = ttk.Frame(pestanas)
 pestanas.add(pestana_carrera, text="Carrera")
