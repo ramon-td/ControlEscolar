@@ -461,6 +461,7 @@ pestana_planeacion = ttk.Frame(pestanas)
 pestanas.add(pestana_planeacion, text="Planeación")
 pestanas.tab(9, state="disabled")
 #==============================================================================================================
+
 #=======================================================AJUSTES DE POSICION====================================
 test_label = tk.Label(pestana_usuarios, text="")
 test_label.grid(column=6, row=6, sticky=tk.NSEW)
@@ -472,6 +473,7 @@ pestana_login.columnconfigure(3, weight=1)
 pestana_login.rowconfigure(0, weight=1)
 pestana_login.rowconfigure(5, weight=1)
 #===============================================================================================================
+
 #======================================================FUNCIONES================================================
 #----------------------------------------------Funcionamiento general-------------------------------------------
 def dormirPestanas(code): #Se introduce un binario que indica que pestañas dormir y cuáles mantener despiertas
@@ -480,7 +482,8 @@ def dormirPestanas(code): #Se introduce un binario que indica que pestañas dorm
             pestanas.tab(x, state="disable")
         else:
             pestanas.tab(x, state="normal")
-def validarCampoNoVacio(lista):
+
+def validarCampoNoVacio(lista): #Se usa cuando hay que verificar qun campo no se quede vacío
     for x in lista:
         if x.get() == "":
             messagebox.showerror(title="Campo vacío", message="El campo " + str(x) + " no puede estar vacío")
@@ -496,13 +499,13 @@ def login():
     listaCampos = {username_entry, password_entry}
     if validarCampoNoVacio(listaCampos):
         for x in range(len(listaUsuarios)):
-            if username_entry.get() == listaUsuarios[x].get("Username"):
-                if password_entry.get() == listaUsuarios[x].get("Password"):
-                    if listaUsuarios[x].get("Permisos") == 4:
+            if username_entry.get() == listaUsuarios[x].get("usuario"):
+                if password_entry.get() == listaUsuarios[x].get("password"):
+                    if listaUsuarios[x].get("perfil") == "Admin":
                         dormirPestanas("1111111111")
-                    elif listaUsuarios[x].get("Permisos") == 3:
+                    elif listaUsuarios[x].get("perfil") == "Maestro":
                         dormirPestanas("1101000000")
-                    elif listaUsuarios[x].get("Permisos") == 2:
+                    elif listaUsuarios[x].get("perfil") == "Alumno":
                         dormirPestanas("1110000000")
                     messagebox.showinfo(title="Bienvenido!", message="Bienvenido " + username_entry.get() + "!")
                     pestanas.select(pestana_usuarios)

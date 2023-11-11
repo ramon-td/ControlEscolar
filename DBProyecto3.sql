@@ -125,3 +125,8 @@ CREATE TABLE IF NOT EXISTS `materias_carrera` (
   CONSTRAINT `FK_materias_carrera_carrera` FOREIGN KEY (`carrera_materia_id`) REFERENCES `carrera` (`grupo_id`),
   CONSTRAINT `FK_materias_carrera_materias` FOREIGN KEY (`materias_carrera_id`) REFERENCES `materias` (`carrera_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+INSERT INTO `usuarios` (`idusuario`, `nombre`, `ap`, `am`, `usuario`, `password`, `perfil`) 
+VALUES ('1', 'Admin', NULL, NULL, 'Admin', 'AdminP', 'Admin'), 
+('2', 'Maestro', NULL, NULL, 'Maestro', 'MaestroP', 'Maestro'),
+('3', 'Alumno', NULL, NULL, 'Alumno', 'AlumnoP', 'Alumno')
