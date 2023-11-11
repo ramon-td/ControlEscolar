@@ -21,3 +21,7 @@ Falta crear la BDD y conectar con la clase
 Falta añadir funcionalidad a las demás pestañas
 
 Falta agregar los widgets pertinentes a todas las pestañas a partir de la #2
+
+11/11/2023 -  Abel    
+Login ya funciona totalmente con todo y conexión a BDD y control de objetos 
+Falta comenzar con las demás ventanas y verificar que los widgets sean los adecuados
