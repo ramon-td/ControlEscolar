@@ -62,7 +62,7 @@ user_perfil_optionMenu = tk.OptionMenu(pestana_usuarios, user_perfil_selection, 
 user_perfil_optionMenu.configure(state="disabled")
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - Botones - - - - - - - - - - - - - - - - - - - - - - - - 
-user_buscar_btn = tk.Button(pestana_usuarios, text="Buscar")
+user_buscar_btn = tk.Button(pestana_usuarios, text="Buscar", command=lambda:buscarUsuarios())
 user_buscar_btn.configure(width=10)
 user_nuevo_btn = tk.Button(pestana_usuarios, text="Nuevo")
 user_nuevo_btn.configure(width=10)
@@ -70,7 +70,7 @@ user_guardar_btn = tk.Button(pestana_usuarios, text="Guardar")
 user_guardar_btn.configure(width=10, state="disabled")
 user_cancelar_btn = tk.Button(pestana_usuarios, text="Cancelar")
 user_cancelar_btn.configure(width=10, state="disabled")
-user_editar_btn = tk.Button(pestana_usuarios, text="Editar")
+user_editar_btn = tk.Button(pestana_usuarios, text="Editar", command=lambda:editarUsuario())
 user_editar_btn.configure(width=10, state="disabled")
 user_baja_btn = tk.Button(pestana_usuarios, text="Baja")
 user_baja_btn.configure(width=10, state="disabled")
@@ -490,6 +490,19 @@ def validarCampoNoVacio(lista): #Se usa cuando hay que verificar qun campo no se
             return False
     return True
 
+def bloquearCampos(accion, listaCampos):  #Accion es un booleano, si es true se van a bloquear los campos listados en ListaCampos, si es false se van a desbloquear
+    for campo in listaCampos:
+        if accion:
+            campo.configure(state="disabled")
+        if not accion:
+            campo.configure(state="normal")
+            
+def llenarCampos(listaCampos, listaDatos, diccionario):
+    for campo, dato in zip(listaCampos, listaDatos):
+        campo.configure(state="normal")
+        campo.delete(0, tk.END)
+        campo.insert(0, diccionario.get(dato))
+        campo.configure(state="disabled")
 
 
 #-----------------------------------------------------Login----------------------------------------------------
@@ -519,7 +532,54 @@ def login():
 def clearLogin():
     username_entry.delete(0, tk.END)
     password_entry.delete(0, tk.END)
+#--------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------Usuarios--------------------------------------------------
+def buscarUsuarios():
+    listaUsuarios = Usuarios()
+    listaUsuarios = listaUsuarios.listarUsuarios()
+    listaCampos = {user_code_entry}
+    if validarCampoNoVacio(listaCampos):
+        for x in range(len(listaUsuarios)):
+            if user_code_entry.get() == str(listaUsuarios[x].get("idusuario")):
+                user_editar_btn.configure(state="normal")
+                listaCampos = ( user_id_entry, 
+                                user_nombre_entry, 
+                                user_apellidoP_entry, 
+                                user_apellidoM_entry, 
+                                user_email_entry, 
+                                user_username_entry, 
+                                user_password_entry)
+                listaDatos = ("idusuario", "nombre", "ap", "am", "usuario", "usuario", "password")
+                llenarCampos(listaCampos, listaDatos, listaUsuarios[x])
+                return 0
+        messagebox.showerror(title="No se encuentra", message= "No se encontró el código")
+
+def editarUsuario():
+    listaCampos = {user_code_entry, 
+                    user_nombre_entry, 
+                    user_apellidoP_entry, 
+                    user_apellidoM_entry, 
+                    user_email_entry, 
+                    user_username_entry, 
+                    user_password_entry}
+    listaCamposBloquear = {user_editar_btn,
+                           user_nuevo_btn,
+                           user_buscar_btn,
+                           user_code_entry}
+    listaOtros = {user_editar_btn,
+                  user_baja_btn,
+                  user_perfil_optionMenu,
+                  user_cancelar_btn,
+                  user_guardar_btn}
+    bloquearCampos(False, listaCampos)
+    bloquearCampos(False, listaOtros)
+    bloquearCampos(True, listaCamposBloquear)
+
+
+#--------------------------------------------------------------------------------------------------------------
 #===============================================================================================================
 
-dormirPestanas("1000000000")
+dormirPestanas("1100000000")
+pestanas.select(pestana_usuarios)
+
 main.mainloop()

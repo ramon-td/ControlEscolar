@@ -23,13 +23,20 @@ class Usuarios:
                 cursor.execute("SELECT * FROM usuarios;")
                 resultados = cursor.fetchall()
                 for row in resultados:
-                    self.idusuario = row[0]
-                    self.nombre = row[1]
-                    self.ap = row[2]
-                    self.am = row[3]
-                    self.usuario = row[4]
-                    self.password = row[5]
-                    self.perfil = row[6]
+                    failsafe = []
+                    for x in range(0, 7):
+                        if row[x] is None:
+                            failsafe.append("")
+                        else:
+                            failsafe.append(row[x])
+
+                    self.idusuario = failsafe[0]
+                    self.nombre = failsafe[1]
+                    self.ap = failsafe[2]
+                    self.am = failsafe[3]
+                    self.usuario = failsafe[4]
+                    self.password = failsafe[5]
+                    self.perfil = failsafe[6]
                     listaUsuarios.append({  "idusuario" : self.idusuario,
                                             "nombre" : self.nombre,
                                             "ap" : self.ap,
