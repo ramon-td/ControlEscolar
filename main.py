@@ -57,7 +57,7 @@ user_email_entry = tk.Entry(pestana_usuarios, state="disabled")
 user_username_entry = tk.Entry(pestana_usuarios, state="disabled")
 user_password_entry = tk.Entry(pestana_usuarios, state="disabled", show="•")
 user_perfil_selection = tk.StringVar(main)
-user_perfil_options = ("Administrador", "Maestro", "Alumno")
+user_perfil_options = ("Admin", "Maestro", "Alumno")
 user_perfil_optionMenu = tk.OptionMenu(pestana_usuarios, user_perfil_selection, *user_perfil_options)
 user_perfil_optionMenu.configure(state="disabled")
 
@@ -68,7 +68,7 @@ user_nuevo_btn = tk.Button(pestana_usuarios, text="Nuevo")
 user_nuevo_btn.configure(width=10)
 user_guardar_btn = tk.Button(pestana_usuarios, text="Guardar")
 user_guardar_btn.configure(width=10, state="disabled")
-user_cancelar_btn = tk.Button(pestana_usuarios, text="Cancelar")
+user_cancelar_btn = tk.Button(pestana_usuarios, text="Cancelar", command=lambda:cancelarUsuario())
 user_cancelar_btn.configure(width=10, state="disabled")
 user_editar_btn = tk.Button(pestana_usuarios, text="Editar", command=lambda:editarUsuario())
 user_editar_btn.configure(width=10, state="disabled")
@@ -551,6 +551,8 @@ def buscarUsuarios():
                                 user_password_entry)
                 listaDatos = ("idusuario", "nombre", "ap", "am", "usuario", "usuario", "password")
                 llenarCampos(listaCampos, listaDatos, listaUsuarios[x])
+                user_perfil_selection.set(listaUsuarios[x].get("perfil"))
+                
                 return 0
         messagebox.showerror(title="No se encuentra", message= "No se encontró el código")
 
@@ -575,6 +577,27 @@ def editarUsuario():
     bloquearCampos(False, listaOtros)
     bloquearCampos(True, listaCamposBloquear)
 
+def cancelarUsuario():
+    listaCampos = {user_code_entry, 
+                    user_nombre_entry, 
+                    user_apellidoP_entry, 
+                    user_apellidoM_entry, 
+                    user_email_entry, 
+                    user_username_entry, 
+                    user_password_entry}
+    listaCamposBloquear = {user_editar_btn,
+                           user_nuevo_btn,
+                           user_buscar_btn,
+                           user_code_entry}
+    listaOtros = {user_editar_btn,
+                  user_baja_btn,
+                  user_perfil_optionMenu,
+                  user_cancelar_btn,
+                  user_guardar_btn}
+    bloquearCampos(True, listaCampos)
+    bloquearCampos(True, listaOtros)
+    bloquearCampos(False, listaCamposBloquear)
+    buscarUsuarios()
 
 #--------------------------------------------------------------------------------------------------------------
 #===============================================================================================================
