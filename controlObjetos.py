@@ -1,7 +1,7 @@
 import mysql.connector as database
 from mysql.connector import Error
 
-class Usuarios:
+class Conexion:
     def __init__(self):
         try:
             self.conexion=database.connect(
@@ -12,72 +12,47 @@ class Usuarios:
                 db = "proyecto"
             )
         except Error as ex:
-            print("Error al intentar conexion")
+            print("Error al intentar conexion: " + ex)
+    
+    def obtenerObjeto(self, tabla, columna, que):
+        if self.conexion.is_connected():
+            try:
+                Objeto = {}
+                cursor = self.conexion.cursor()
+                cursor.execute("SELECT * FROM " + tabla + " WHERE " + columna +  " = \"" + que + "\";")
+                resultados = cursor.fetchall()
+                cursor.execute("SHOW COLUMNS FROM " + tabla + ";")
+                QueryInfo = cursor.fetchall()
 
-    def listarUsuarios(self):
+                data = []
+                key = []
+                
+                for row in resultados:
+                    for x in range(len(row)):
+                        if row[x] is None:
+                            data.append("")
+                        else:
+                            data.append(row[x])
+
+                for row in QueryInfo:
+                    key.append(row[0])
+
+                for x in range(len(data)):
+                    Objeto.setdefault(key[x], data[x])
+
+                # print(Objeto.items())
+
+            except Error as ex:
+                print("Error al intentar conexion" + str(ex))
+        return Objeto
+    
+    def actualizarObjeto(self, objeto, tabla, columna, fila):
+        sentence = ""
+        for key in objeto.items():
+            sentence += key[0] + " = \"" + key[1] + "\","
+        cursor = self.conexion.cursor()
+        cursor.execute("UPDATE " + tabla + " SET " + sentence[:-1] +  " WHERE " + columna + " = \"" + fila + "\";")
+        self.conexion.commit()
         
-        if self.conexion.is_connected():
-            try:
-                listaUsuarios = [{}]
-                cursor = self.conexion.cursor()
-                cursor.execute("SELECT * FROM usuarios;")
-                resultados = cursor.fetchall()
-                for row in resultados:
-                    failsafe = []
-                    for x in range(0, 7):
-                        if row[x] is None:
-                            failsafe.append("")
-                        else:
-                            failsafe.append(row[x])
 
-                    self.idusuario = failsafe[0]
-                    self.nombre = failsafe[1]
-                    self.ap = failsafe[2]
-                    self.am = failsafe[3]
-                    self.usuario = failsafe[4]
-                    self.password = failsafe[5]
-                    self.perfil = failsafe[6]
-                    listaUsuarios.append({  "idusuario" : self.idusuario,
-                                            "nombre" : self.nombre,
-                                            "ap" : self.ap,
-                                            "am" : self.am,
-                                            "usuario" : self.usuario,
-                                            "password" : self.password,
-                                            "perfil" : self.perfil})
-            except Error as ex:
-                print("Error al intentar conexion")
-        return listaUsuarios
-    
-    def obtenerUsuario(self, id):
-        if self.conexion.is_connected():
-            try:
-                Usuario = {}
-                cursor = self.conexion.cursor()
-                cursor.execute("SELECT * FROM usuarios WHERE idusuario = " + id + ";")
-                resultados = cursor.fetchall()
-                for row in resultados:
-                    failsafe = []
-                    for x in range(0, 7):
-                        if row[x] is None:
-                            failsafe.append("")
-                        else:
-                            failsafe.append(row[x])
 
-                    self.idusuario = failsafe[0]
-                    self.nombre = failsafe[1]
-                    self.ap = failsafe[2]
-                    self.am = failsafe[3]
-                    self.usuario = failsafe[4]
-                    self.password = failsafe[5]
-                    self.perfil = failsafe[6]
-                    Usuario = {"idusuario" : self.idusuario,
-                                "nombre" : self.nombre,
-                                "ap" : self.ap,
-                                "am" : self.am,
-                                "usuario" : self.usuario,
-                                "password" : self.password,
-                                "perfil" : self.perfil}
-            except Error as ex:
-                print("Error al intentar conexion")
-        return Usuario
-    
