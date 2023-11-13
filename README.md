@@ -25,3 +25,7 @@ Falta agregar los widgets pertinentes a todas las pestañas a partir de la #2
 11/11/2023 -  Abel    
 Login ya funciona totalmente con todo y conexión a BDD y control de objetos 
 Falta comenzar con las demás ventanas y verificar que los widgets sean los adecuados
+
+13/11/2023   -Abel
+Funcionando al 100 la función de editar y guardar usuarios con conexión a la BDD
+Replanteamiento y reimplementación de la clase controladora de objetos para mayor versatilidad
