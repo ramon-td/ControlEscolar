@@ -57,7 +57,7 @@ user_email_entry = tk.Entry(pestana_usuarios, state="disabled")
 user_username_entry = tk.Entry(pestana_usuarios, state="disabled")
 user_password_entry = tk.Entry(pestana_usuarios, state="disabled", show="•")
 user_perfil_selection = tk.StringVar(main)
-user_perfil_options = ("Administrador", "Maestro", "Alumno")
+user_perfil_options = ("Admin", "Maestro", "Alumno")
 user_perfil_optionMenu = tk.OptionMenu(pestana_usuarios, user_perfil_selection, *user_perfil_options)
 user_perfil_optionMenu.configure(state="disabled")
 
@@ -66,9 +66,9 @@ user_buscar_btn = tk.Button(pestana_usuarios, text="Buscar", command=lambda:busc
 user_buscar_btn.configure(width=10)
 user_nuevo_btn = tk.Button(pestana_usuarios, text="Nuevo")
 user_nuevo_btn.configure(width=10)
-user_guardar_btn = tk.Button(pestana_usuarios, text="Guardar")
+user_guardar_btn = tk.Button(pestana_usuarios, text="Guardar", command=lambda:guardarUsuario())
 user_guardar_btn.configure(width=10, state="disabled")
-user_cancelar_btn = tk.Button(pestana_usuarios, text="Cancelar")
+user_cancelar_btn = tk.Button(pestana_usuarios, text="Cancelar", command=lambda:cancelarUsuario())
 user_cancelar_btn.configure(width=10, state="disabled")
 user_editar_btn = tk.Button(pestana_usuarios, text="Editar", command=lambda:editarUsuario())
 user_editar_btn.configure(width=10, state="disabled")
@@ -535,24 +535,25 @@ def clearLogin():
 #--------------------------------------------------------------------------------------------------------------
 #----------------------------------------------------Usuarios--------------------------------------------------
 def buscarUsuarios():
-    listaUsuarios = Usuarios()
-    listaUsuarios = listaUsuarios.listarUsuarios()
+    Usuario = Usuarios()
+    Usuario = Usuario.obtenerUsuario(user_code_entry.get())
     listaCampos = {user_code_entry}
     if validarCampoNoVacio(listaCampos):
-        for x in range(len(listaUsuarios)):
-            if user_code_entry.get() == str(listaUsuarios[x].get("idusuario")):
-                user_editar_btn.configure(state="normal")
-                listaCampos = ( user_id_entry, 
-                                user_nombre_entry, 
-                                user_apellidoP_entry, 
-                                user_apellidoM_entry, 
-                                user_email_entry, 
-                                user_username_entry, 
-                                user_password_entry)
-                listaDatos = ("idusuario", "nombre", "ap", "am", "usuario", "usuario", "password")
-                llenarCampos(listaCampos, listaDatos, listaUsuarios[x])
-                return 0
-        messagebox.showerror(title="No se encuentra", message= "No se encontró el código")
+        if Usuario:            
+            user_editar_btn.configure(state="normal")
+            listaCampos = ( user_id_entry, 
+                            user_nombre_entry, 
+                            user_apellidoP_entry, 
+                            user_apellidoM_entry, 
+                            user_email_entry, 
+                            user_username_entry, 
+                            user_password_entry)
+            listaDatos = ("idusuario", "nombre", "ap", "am", "usuario", "usuario", "password")
+            llenarCampos(listaCampos, listaDatos, Usuario)
+            user_perfil_selection.set(Usuario.get("perfil"))    
+            return 0
+        else:
+            messagebox.showerror(title="No se encuentra", message= "No se encontró el código")
 
 def editarUsuario():
     listaCampos = {user_code_entry, 
@@ -575,11 +576,48 @@ def editarUsuario():
     bloquearCampos(False, listaOtros)
     bloquearCampos(True, listaCamposBloquear)
 
+def cancelarUsuario():
+    listaCampos = {user_code_entry, 
+                    user_nombre_entry, 
+                    user_apellidoP_entry, 
+                    user_apellidoM_entry, 
+                    user_email_entry, 
+                    user_username_entry, 
+                    user_password_entry}
+    listaCamposBloquear = {user_editar_btn,
+                           user_nuevo_btn,
+                           user_buscar_btn,
+                           user_code_entry}
+    listaOtros = {user_editar_btn,
+                  user_baja_btn,
+                  user_perfil_optionMenu,
+                  user_cancelar_btn,
+                  user_guardar_btn}
+    bloquearCampos(True, listaCampos)
+    bloquearCampos(True, listaOtros)
+    bloquearCampos(False, listaCamposBloquear)
+    buscarUsuarios()
+
+def guardarUsuario():
+    Usuario = {"idusuario" : user_id_entry,
+                "nombre" : user_nombre_entry,
+                "ap" : user_apellidoP_entry,
+                "am" : user_apellidoM_entry,
+                "usuario" : user_username_entry,
+                "password" : user_password_entry,
+                "perfil" : user_perfil_selection}
+    
+
+    # Usuario = Usuarios()
+    # Usuario = Usuario.obtenerUsuario(user_id_entry.get())
+    # if Usuario:
+    #     print("El usuario no existe")
+    
 
 #--------------------------------------------------------------------------------------------------------------
 #===============================================================================================================
 
-dormirPestanas("1100000000")
-pestanas.select(pestana_usuarios)
+dormirPestanas("1000000000")
+# pestanas.select(pestana_usuarios)
 
 main.mainloop()
