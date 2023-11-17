@@ -12,8 +12,25 @@ class Conexion:
                 db = "proyecto"
             )
         except Error as ex:
-            print("Error al intentar conexion: " + ex)
+            print("Error al intentar conexion: " + str(ex))
     
+    def obtenerColumna(self, tabla, columna):
+        if self.conexion.is_connected():
+            try:
+                cursor = self.conexion.cursor()
+                cursor.execute("SELECT " + columna + " FROM " + tabla + ";")
+                resultados = cursor.fetchall()
+                
+                listaColumna = []
+                for campo in resultados:
+                    # listaColumna.append(campo)
+                    listaColumna.append(str(campo)[1:-2])
+
+                return listaColumna
+            
+            except Error as ex:
+                print("Error al intentar conexion" + str(ex))
+
     def obtenerObjeto(self, tabla, columna, que):
         if self.conexion.is_connected():
             try:
@@ -37,7 +54,7 @@ class Conexion:
                 for row in QueryInfo:
                     key.append(row[0])
 
-                for x in range(len(data)):
+                for x in range(len(key)):
                     Objeto.setdefault(key[x], data[x])
 
                 # print(Objeto.items())
@@ -47,12 +64,35 @@ class Conexion:
         return Objeto
     
     def actualizarObjeto(self, objeto, tabla, columna, fila):
-        sentence = ""
-        for key in objeto.items():
-            sentence += key[0] + " = \"" + key[1] + "\","
-        cursor = self.conexion.cursor()
-        cursor.execute("UPDATE " + tabla + " SET " + sentence[:-1] +  " WHERE " + columna + " = \"" + fila + "\";")
-        self.conexion.commit()
-        
+         if self.conexion.is_connected():
+            try:
+                sentence = ""
+                for key in objeto.items():
+                    sentence += key[0] + " = \"" + key[1] + "\","
+                cursor = self.conexion.cursor()
+                cursor.execute("UPDATE " + tabla + " SET " + sentence[:-1] +  " WHERE " + columna + " = \"" + fila + "\";")
+                self.conexion.commit()
+                return 0
+            except Error as ex:
+                print("Error al intentar conexion" + str(ex))
+                return 1
 
+    def insertarNuevoObjeto(self, objeto, tabla):
+         if self.conexion.is_connected():
+            try:
+                keys = ""
+                values = ""
+
+                for key in objeto.keys():
+                    keys += key + ","
+                for value in objeto.values():
+                    values += "\"" + value + "\","
+                print("INSERT INTO " + tabla + " (" + keys[:-1] +  ") VALUES (" + values[:-1] + ");")
+                cursor = self.conexion.cursor()
+                cursor.execute("INSERT INTO " + tabla + " (" + keys[:-1] +  ") VALUES (" + values[:-1] + ");")
+                self.conexion.commit()
+                return 0
+            except Error as ex:
+                print("Error al intentar inserción: " + str(ex))
+                return 1
 
