@@ -72,7 +72,7 @@ user_cancelar_btn = tk.Button(pestana_usuarios, text="Cancelar", command=lambda:
 user_cancelar_btn.configure(width=10, state="disabled")
 user_editar_btn = tk.Button(pestana_usuarios, text="Editar", command=lambda:editarUsuario())
 user_editar_btn.configure(width=10, state="disabled")
-user_baja_btn = tk.Button(pestana_usuarios, text="Baja", command=lambda:bajaUsuario())
+user_baja_btn = tk.Button(pestana_usuarios, text="Baja")
 user_baja_btn.configure(width=10, state="disabled")
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - Posiciones - - - - - - - - - - - - - - - - - - - - - - - - 
