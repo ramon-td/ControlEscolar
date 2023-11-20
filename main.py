@@ -599,6 +599,7 @@ def cancelarUsuario():
     buscarUsuarios()
 
 def guardarUsuario():
+    id = int(user_id_entry.get())
     Usuario = {"nombre" : user_nombre_entry.get(),
                 "ap" : user_apellidoP_entry.get(),
                 "am" : user_apellidoM_entry.get(),
@@ -606,7 +607,7 @@ def guardarUsuario():
                 "password" : user_password_entry.get(),
                 "perfil" : user_perfil_selection.get()}
     objeto = Conexion()
-    objeto.actualizarObjeto(Usuario, "usuarios", "idusuario", user_id_entry.get())
+    objeto.actualizarObjeto(Usuario, id)
     
 
 #--------------------------------------------------------------------------------------------------------------
