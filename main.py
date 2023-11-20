@@ -64,7 +64,7 @@ user_perfil_optionMenu.configure(state="disabled")
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - Botones - - - - - - - - - - - - - - - - - - - - - - - - 
 user_buscar_btn = tk.Button(pestana_usuarios, text="Buscar", command=lambda:buscarUsuarios())
 user_buscar_btn.configure(width=10)
-user_nuevo_btn = tk.Button(pestana_usuarios, text="Nuevo")
+user_nuevo_btn = tk.Button(pestana_usuarios, text="Nuevo", command=lambda:nuevoUsuario())
 user_nuevo_btn.configure(width=10)
 user_guardar_btn = tk.Button(pestana_usuarios, text="Guardar", command=lambda:guardarUsuario())
 user_guardar_btn.configure(width=10, state="disabled")
@@ -483,10 +483,11 @@ def dormirPestanas(code): #Se introduce un binario que indica que pestañas dorm
         else:
             pestanas.tab(x, state="normal")
 
-def validarCampoNoVacio(lista): #Se usa cuando hay que verificar qun campo no se quede vacío
+def validarCampoNoVacio(lista, mensaje): #Se usa cuando hay que verificar qun campo no se quede vacío
     for x in lista:
         if x.get() == "":
-            messagebox.showerror(title="Campo vacío", message="El campo " + str(x) + " no puede estar vacío")
+            if mensaje == 1:
+                messagebox.showwarning(title="Campo vacío", message="El campo \"" + str(x.winfo_name()) + "\" no puede estar vacío")
             return False
     return True
 
@@ -510,7 +511,7 @@ def login():
     Objeto = Conexion()
     listaCampos = {username_entry, password_entry}
     Objeto = Objeto.obtenerObjeto("usuarios", "usuario", username_entry.get())
-    if validarCampoNoVacio(listaCampos):
+    if validarCampoNoVacio(listaCampos, 1):
         if username_entry.get() == Objeto.get("usuario"):
             if password_entry.get() == Objeto.get("password"):
                 if Objeto.get("perfil") == "Admin":
@@ -535,12 +536,13 @@ def clearLogin():
 #--------------------------------------------------------------------------------------------------------------
 #----------------------------------------------------Usuarios--------------------------------------------------
 def buscarUsuarios():
-    Usuario = Conexion()
-    Usuario = Usuario.obtenerObjeto("usuarios", "idusuario", user_code_entry.get())
     listaCampos = {user_code_entry}
-    if validarCampoNoVacio(listaCampos):
+    if validarCampoNoVacio(listaCampos, 0):
+        Usuario = Conexion()
+        Usuario = Usuario.obtenerObjeto("usuarios", "idusuario", user_code_entry.get())
         if Usuario:            
             user_editar_btn.configure(state="normal")
+            user_cancelar_btn.configure(state="normal")
             listaCampos = ( user_id_entry, 
                             user_nombre_entry, 
                             user_apellidoP_entry, 
@@ -554,6 +556,19 @@ def buscarUsuarios():
             return 0
         else:
             messagebox.showerror(title="No se encuentra", message= "No se encontró el código")
+    else: 
+        objetos = []
+        mensaje = "Lista de usuarios: \n"
+        conexion = Conexion()
+        ids = conexion.obtenerColumna("usuarios", "idusuario")
+        print(ids)
+        for idindex in range(0, len(ids)):
+            objetos.append(conexion.obtenerObjeto("usuarios", "idusuario", ids[idindex]))
+            mensaje += "\nID: " + str(objetos[idindex].get("idusuario")) + "  \t|  Usuario: " + str(objetos[idindex].get("usuario")) + "\n"
+            # print(objetos[idindex].values())
+        
+
+        messagebox.showinfo(title="Búsqueda general", message=mensaje)
 
 def editarUsuario():
     listaCampos = {user_code_entry, 
@@ -596,7 +611,7 @@ def cancelarUsuario():
     bloquearCampos(True, listaCampos)
     bloquearCampos(True, listaOtros)
     bloquearCampos(False, listaCamposBloquear)
-    buscarUsuarios()
+    # buscarUsuarios()
 
 def guardarUsuario():
     Usuario = {"nombre" : user_nombre_entry.get(),
@@ -606,9 +621,22 @@ def guardarUsuario():
                 "password" : user_password_entry.get(),
                 "perfil" : user_perfil_selection.get()}
     objeto = Conexion()
-    objeto.actualizarObjeto(Usuario, "usuarios", "idusuario", user_id_entry.get())
-    
+    listaCampos = {user_id_entry}
+    if validarCampoNoVacio(listaCampos, 0):
+        messagebox.showinfo(title="Operación exitosa", message= "Se ha editado el registro con exito"), cancelarUsuario() if objeto.actualizarObjeto(Usuario, "usuarios", "idusuario", user_id_entry.get()) == 0 else  messagebox.showerror(title="Error", message= "No se ha podido realizar la operación")
+    else:
+        listaCampos = {user_nombre_entry, user_username_entry, user_password_entry}
+        if validarCampoNoVacio(listaCampos, 1):
+            if objeto.insertarNuevoObjeto(Usuario, "usuarios") == 0:
+                Usuario = objeto.obtenerObjeto("usuarios", "nombre", user_nombre_entry.get())
+                messagebox.showinfo(title="Operación exitosa", message= "Se ha agregado el registro con exito\nEl ID del nuevo usuario es: " + str(Usuario.get("idusuario")))
+                cancelarUsuario() 
+            else:  
+                messagebox.showerror(title="Error", message= "No se ha podido agregar el registro")
 
+    
+def nuevoUsuario():
+    editarUsuario()
 #--------------------------------------------------------------------------------------------------------------
 #===============================================================================================================
 
