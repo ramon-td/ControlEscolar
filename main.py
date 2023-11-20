@@ -635,8 +635,6 @@ def guardarUsuario():
             else:  
                 messagebox.showerror(title="Error", message= "No se ha podido agregar el registro")
 
-def bajaUsuario():
-    id = int(user_id_entry.get())
 
     
 def nuevoUsuario():
