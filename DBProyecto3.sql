@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `usuario` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `password` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `correo` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
-  `status` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `status` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT "ACTIVO",
   `perfil` varchar(15) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   PRIMARY KEY (`idusuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
