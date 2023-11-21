@@ -65,7 +65,7 @@ class Conexion:
             except Error as ex:
                 print("Error al intentar conexion" + str(ex))
         return Objeto
-    
+  
     def actualizarObjeto(self, objeto, tabla, columna, fila):
          if self.conexion.is_connected():
             try:
