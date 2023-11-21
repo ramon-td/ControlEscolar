@@ -765,7 +765,6 @@ def cancelarUsuario():
     # buscarUsuarios()
 
 def guardarUsuario():
-    id = int(user_id_entry.get())
     Usuario = {"nombre" : user_nombre_entry.get(),
                 "ap" : user_apellidoP_entry.get(),
                 "am" : user_apellidoM_entry.get(),
@@ -814,7 +813,7 @@ def bajaUsuario():
 #--------------------------------------------------------------------------------------------------------------
 #===============================================================================================================
 
-dormirPestanas("10")
-pestanas.select(pestana_carrera)
+dormirPestanas("1100000000")
+pestanas.select(pestana_maestros)
 
 main.mainloop()
