@@ -65,15 +65,7 @@ class Conexion:
             except Error as ex:
                 print("Error al intentar conexion" + str(ex))
         return Objeto
-    
-    def actualizarObjeto(self, objeto, id):
-        sentence = ""
-        for key in objeto.items():
-            sentence += key[0] + " = \"" + key[1] + "\","
-        cursor = self.conexion.cursor()
-        cursor.execute("UPDATE usuarios SET " + sentence[:-1] +  " WHERE idusuario = " + str(id) + ";")
-        self.conexion.commit()
-        
+  
     def actualizarObjeto(self, objeto, tabla, columna, fila):
          if self.conexion.is_connected():
             try:
