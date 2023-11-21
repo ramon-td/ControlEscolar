@@ -44,18 +44,21 @@ class Conexion:
                 data = []
                 key = []
                 
-                for row in resultados:
-                    for x in range(len(row)):
-                        if row[x] is None:
-                            data.append("")
-                        else:
-                            data.append(row[x])
+                if resultados:
+                    for row in resultados:
+                        for x in range(len(row)):
+                            if row[x] is None:
+                                data.append("")
+                            else:
+                                data.append(row[x])
+                        # print(str(row))
 
-                for row in QueryInfo:
-                    key.append(row[0])
+                    for row in QueryInfo:
+                        key.append(row[0])
+                        # print(str(row))
 
-                for x in range(len(key)):
-                    Objeto.setdefault(key[x], data[x])
+                    for x in range(len(key)):
+                        Objeto.setdefault(key[x], data[x])
 
                 # print(Objeto.items())
 
@@ -95,7 +98,7 @@ class Conexion:
                     keys += key + ","
                 for value in objeto.values():
                     values += "\"" + value + "\","
-                print("INSERT INTO " + tabla + " (" + keys[:-1] +  ") VALUES (" + values[:-1] + ");")
+                # print("INSERT INTO " + tabla + " (" + keys[:-1] +  ") VALUES (" + values[:-1] + ");")
                 cursor = self.conexion.cursor()
                 cursor.execute("INSERT INTO " + tabla + " (" + keys[:-1] +  ") VALUES (" + values[:-1] + ");")
                 self.conexion.commit()
@@ -104,3 +107,14 @@ class Conexion:
                 print("Error al intentar inserción: " + str(ex))
                 return 1
 
+    def eliminarObjeto(self, tabla, id, columna):
+        if self.conexion.is_connected():
+            try:
+                # print("INSERT INTO " + tabla + " (" + keys[:-1] +  ") VALUES (" + values[:-1] + ");")
+                cursor = self.conexion.cursor()
+                cursor.execute("DELETE FROM " + tabla + " WHERE " +columna +  " = \"" + id + "\";")
+                self.conexion.commit()
+                return 0
+            except Error as ex:
+                print("Error al intentar eliminar el objeto: " + str(ex))
+                return 1

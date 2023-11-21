@@ -56,7 +56,7 @@ user_apellidoM_entry = tk.Entry(pestana_usuarios, state="disabled")
 user_email_entry = tk.Entry(pestana_usuarios, state="disabled")
 user_username_entry = tk.Entry(pestana_usuarios, state="disabled")
 user_password_entry = tk.Entry(pestana_usuarios, state="disabled", show="•")
-user_perfil_selection = tk.StringVar(main)
+user_perfil_selection = tk.StringVar(value="Alumno")
 user_perfil_options = ("Admin", "Maestro", "Alumno")
 user_perfil_optionMenu = tk.OptionMenu(pestana_usuarios, user_perfil_selection, *user_perfil_options)
 user_perfil_optionMenu.configure(state="disabled")
@@ -72,7 +72,7 @@ user_cancelar_btn = tk.Button(pestana_usuarios, text="Cancelar", command=lambda:
 user_cancelar_btn.configure(width=10, state="disabled")
 user_editar_btn = tk.Button(pestana_usuarios, text="Editar", command=lambda:editarUsuario())
 user_editar_btn.configure(width=10, state="disabled")
-user_baja_btn = tk.Button(pestana_usuarios, text="Baja")
+user_baja_btn = tk.Button(pestana_usuarios, text="Baja", command=lambda:bajaUsuario())
 user_baja_btn.configure(width=10, state="disabled")
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - Posiciones - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -647,6 +647,9 @@ def llenarCampos(listaCampos, listaDatos, diccionario):
         campo.insert(0, diccionario.get(dato))
         campo.configure(state="disabled")
 
+def limpiarCampos(listaCampos):
+    for campo in listaCampos:
+        campo.delete(0, tk.END)
 
 #-----------------------------------------------------Login----------------------------------------------------
 def login():
@@ -664,16 +667,12 @@ def login():
                     dormirPestanas("1110000000")
                 messagebox.showinfo(title="Bienvenido!", message="Bienvenido " + Objeto.get("nombre") + "!")
                 pestanas.select(pestana_usuarios)
-                clearLogin()
+                limpiarCampos(listaCampos)
                 return 0
             else:
                 messagebox.showerror(title="Credenciales erróneas", message="Ha introducido una contraseña inválida")
                 return 0
         messagebox.showerror(title="Credenciales erróneas", message="No se encontró el nombre de usuario")
-
-def clearLogin():
-    username_entry.delete(0, tk.END)
-    password_entry.delete(0, tk.END)
 
 #--------------------------------------------------------------------------------------------------------------
 #----------------------------------------------------Usuarios--------------------------------------------------
@@ -685,6 +684,7 @@ def buscarUsuarios():
         if Usuario:            
             user_editar_btn.configure(state="normal")
             user_cancelar_btn.configure(state="normal")
+            user_baja_btn.configure(state="normal")
             listaCampos = ( user_id_entry, 
                             user_nombre_entry, 
                             user_apellidoP_entry, 
@@ -692,7 +692,7 @@ def buscarUsuarios():
                             user_email_entry, 
                             user_username_entry, 
                             user_password_entry)
-            listaDatos = ("idusuario", "nombre", "ap", "am", "usuario", "usuario", "password")
+            listaDatos = ("idusuario", "nombre", "ap", "am", "correo", "usuario", "password")
             llenarCampos(listaCampos, listaDatos, Usuario)
             user_perfil_selection.set(Usuario.get("perfil"))    
             return 0
@@ -703,17 +703,45 @@ def buscarUsuarios():
         mensaje = "Lista de usuarios: \n"
         conexion = Conexion()
         ids = conexion.obtenerColumna("usuarios", "idusuario")
-        print(ids)
         for idindex in range(0, len(ids)):
             objetos.append(conexion.obtenerObjeto("usuarios", "idusuario", ids[idindex]))
             mensaje += "\nID: " + str(objetos[idindex].get("idusuario")) + "  \t|  Usuario: " + str(objetos[idindex].get("usuario")) + "\n"
-            # print(objetos[idindex].values())
-        
-
         messagebox.showinfo(title="Búsqueda general", message=mensaje)
+        listaCampos = ( user_id_entry, 
+                        user_nombre_entry, 
+                        user_apellidoP_entry, 
+                        user_apellidoM_entry, 
+                        user_email_entry, 
+                        user_username_entry, 
+                        user_password_entry)
+        bloquearCampos(False, listaCampos)
+        limpiarCampos(listaCampos)
+        bloquearCampos(True, listaCampos)
 
 def editarUsuario():
     listaCampos = {user_code_entry, 
+                    user_nombre_entry, 
+                    user_apellidoP_entry, 
+                    user_apellidoM_entry, 
+                    user_email_entry, 
+                    user_username_entry, 
+                    user_password_entry}
+    listaCamposBloquear = {user_editar_btn,
+                           user_nuevo_btn,
+                           user_baja_btn,
+                           user_buscar_btn,
+                           user_code_entry}
+    listaOtros = {user_editar_btn,
+                  user_perfil_optionMenu,
+                  user_cancelar_btn,
+                  user_guardar_btn}
+    bloquearCampos(False, listaCampos)
+    bloquearCampos(False, listaOtros)
+    bloquearCampos(True, listaCamposBloquear)
+
+def cancelarUsuario():
+    listaCampos = {user_code_entry, 
+                    user_id_entry,
                     user_nombre_entry, 
                     user_apellidoP_entry, 
                     user_apellidoM_entry, 
@@ -730,26 +758,7 @@ def editarUsuario():
                   user_cancelar_btn,
                   user_guardar_btn}
     bloquearCampos(False, listaCampos)
-    bloquearCampos(False, listaOtros)
-    bloquearCampos(True, listaCamposBloquear)
-
-def cancelarUsuario():
-    listaCampos = {user_code_entry, 
-                    user_nombre_entry, 
-                    user_apellidoP_entry, 
-                    user_apellidoM_entry, 
-                    user_email_entry, 
-                    user_username_entry, 
-                    user_password_entry}
-    listaCamposBloquear = {user_editar_btn,
-                           user_nuevo_btn,
-                           user_buscar_btn,
-                           user_code_entry}
-    listaOtros = {user_editar_btn,
-                  user_baja_btn,
-                  user_perfil_optionMenu,
-                  user_cancelar_btn,
-                  user_guardar_btn}
+    limpiarCampos(listaCampos)
     bloquearCampos(True, listaCampos)
     bloquearCampos(True, listaOtros)
     bloquearCampos(False, listaCamposBloquear)
@@ -760,6 +769,7 @@ def guardarUsuario():
     Usuario = {"nombre" : user_nombre_entry.get(),
                 "ap" : user_apellidoP_entry.get(),
                 "am" : user_apellidoM_entry.get(),
+                "correo" : user_email_entry.get(),
                 "usuario" : user_username_entry.get(),
                 "password" : user_password_entry.get(),
                 "perfil" : user_perfil_selection.get()}
@@ -774,13 +784,33 @@ def guardarUsuario():
                 Usuario = objeto.obtenerObjeto("usuarios", "nombre", user_nombre_entry.get())
                 messagebox.showinfo(title="Operación exitosa", message= "Se ha agregado el registro con exito\nEl ID del nuevo usuario es: " + str(Usuario.get("idusuario")))
                 cancelarUsuario() 
+                user_code_entry.configure(state="normal")
+                user_code_entry.delete(0, tk.END)
+                user_code_entry.insert(0, Usuario.get("idusuario"))
+                buscarUsuarios()
             else:  
                 messagebox.showerror(title="Error", message= "No se ha podido agregar el registro")
 
-
-    
 def nuevoUsuario():
+    cancelarUsuario()
     editarUsuario()
+
+def bajaUsuario():
+    listaCampos = {user_id_entry}
+    if validarCampoNoVacio(listaCampos, 1):
+        objeto = Conexion()
+        returnValue = 0
+        popupWindow = tk.Toplevel(main)
+        popupWindow.wm_title("¡Advertencia!")
+        popupWindow.tkraise(main)
+        tk.Label(popupWindow, text="¿Está seguro que desea eliminar el registro con ID = " + str(user_id_entry.get()) + "?\nEsta operación no se puede deshacer").grid(columnspan=2, column=0, row=0, padx=15, pady=15)
+        tk.Button(popupWindow, text="Cancelar", command=lambda:[popupWindow.destroy()]).grid(column=0, row=1, padx=10, pady=10)
+        tk.Button(popupWindow, text="Eliminar", command=lambda:[messagebox.showinfo(title="Operación exitosa", message="Se ha eliminado el registro") if
+                                                                objeto.eliminarObjeto("usuarios", str(user_id_entry.get()), "idusuario") == 0 else 
+                                                                messagebox.showerror(title="Operación fallida", message="No se ha podido eliminar el registro"),
+                                                                popupWindow.destroy(), cancelarUsuario()]).grid(column=1, row=1, padx=10, pady=10)
+
+
 #--------------------------------------------------------------------------------------------------------------
 #===============================================================================================================
 
