@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `maestros` (
   `am` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `correo` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `carrera` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
-  `estudios` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `materia` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `grupo_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_maestros_grupos` (`grupo_id`),
