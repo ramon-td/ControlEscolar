@@ -21,10 +21,12 @@ class Conexion:
                 cursor.execute("SELECT " + columna + " FROM " + tabla + ";")
                 resultados = cursor.fetchall()
                 
-                listaColumna = []
+                listaColumna = ()
                 for campo in resultados:
-                    # listaColumna.append(campo)
-                    listaColumna.append(str(campo)[1:-2])
+                    if str(campo)[1] == "\'":
+                        listaColumna += str(campo)[2:-3],
+                    else:
+                        listaColumna += str(campo)[1:-2],
 
                 return listaColumna
             
@@ -71,9 +73,9 @@ class Conexion:
             try:
                 sentence = ""
                 for key in objeto.items():
-                    sentence += key[0] + " = \"" + key[1] + "\","
+                    sentence += str(key[0]) + " = \"" + str(key[1]) + "\","
                 cursor = self.conexion.cursor()
-                cursor.execute("UPDATE " + tabla + " SET " + sentence[:-1] +  " WHERE " + columna + " = \"" + fila + "\";")
+                cursor.execute("UPDATE " + tabla + " SET " + sentence[:-1] +  " WHERE " + columna + " = \"" + str(fila) + "\";")
                 self.conexion.commit()
                 return 0
             except Error as ex:
@@ -89,7 +91,7 @@ class Conexion:
                 for key in objeto.keys():
                     keys += key + ","
                 for value in objeto.values():
-                    values += "\"" + value + "\","
+                    values += "\"" + str(value) + "\","
                 # print("INSERT INTO " + tabla + " (" + keys[:-1] +  ") VALUES (" + values[:-1] + ");")
                 cursor = self.conexion.cursor()
                 cursor.execute("INSERT INTO " + tabla + " (" + keys[:-1] +  ") VALUES (" + values[:-1] + ");")

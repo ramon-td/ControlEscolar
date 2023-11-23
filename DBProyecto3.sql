@@ -65,15 +65,13 @@ CREATE TABLE IF NOT EXISTS `grupos` (
   `fecha` date DEFAULT NULL,
   `carrera_id` int DEFAULT NULL,
   `materia_id` int DEFAULT NULL,
-  `maestro_id` int DEFAULT NULL,
   `salon_id` int DEFAULT NULL,
   `horario_id` int DEFAULT NULL,
-  `semestre` varchar(255) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `semestre` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `maxalumnos` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_grupos_carrera` (`carrera_id`),
   KEY `materia_id` (`materia_id`),
-  KEY `maestro_id` (`maestro_id`),
   KEY `salon_id` (`salon_id`),
   KEY `horario_id` (`horario_id`),
   CONSTRAINT `FK_grupos_carrera` FOREIGN KEY (`carrera_id`) REFERENCES `carrera` (`grupo_id`),
@@ -99,10 +97,7 @@ CREATE TABLE IF NOT EXISTS `maestros` (
   `correo` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `carrera` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `materia` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
-  `grupo_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_maestros_grupos` (`grupo_id`),
-  CONSTRAINT `FK_maestros_grupos` FOREIGN KEY (`grupo_id`) REFERENCES `grupos` (`maestro_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 CREATE TABLE IF NOT EXISTS `materias` (
@@ -132,4 +127,13 @@ CREATE TABLE IF NOT EXISTS `materias_carrera` (
 INSERT INTO `usuarios` (`idusuario`, `nombre`, `ap`, `am`, `usuario`, `password`, `perfil`) 
 VALUES ('1', 'Admin', NULL, NULL, 'Admin', 'AdminP', 'Admin'), 
 ('2', 'Maestro', NULL, NULL, 'Maestro', 'MaestroP', 'Maestro'),
-('3', 'Alumno', NULL, NULL, 'Alumno', 'AlumnoP', 'Alumno')
+('3', 'Alumno', NULL, NULL, 'Alumno', 'AlumnoP', 'Alumno');
+INSERT INTO `carrera` (`id`, `nombre`, `semestres`, `grupo_id`, `alumno_id`) VALUES (NULL, 'Computacion', '8', '1', NULL);
+INSERT INTO `horario` (`id`, `turno`, `hora`, `grupo_id`) VALUES (NULL, 'Matutino', '7:00', '1');
+INSERT INTO `grupos` (`id`, `nombre`, `fecha`, `carrera_id`, `materia_id`, `salon_id`, `horario_id`, `semestre`, `maxalumnos`) VALUES (NULL, 'grupo 1', '2023-11-22', '1', '1','1', '1', '1', '30');
+INSERT INTO `salon` (`id`, `nombre`, `edificio`, `grupo_id`) VALUES (NULL, 'salon 1', '1', '1'); 
+INSERT INTO `grupos_salon` (`id`, `grupos_salon_id`, `salon_grupos_id`) VALUES (NULL, '1', '1');
+INSERT INTO `materias` (`id`, `nombre`, `creditos`, `semestre`, `carrera_id`, `grupo_id`) VALUES (NULL, 'Circuitos', '8', '4', '1', '1');
+INSERT INTO `alumnos` (`id`, `nombre`, `ap`, `am`, `correo`, `estado`, `fechanacimiento`, `carrera_id`, `grupo_id`) VALUES (NULL, 'Valentin', 'Toscano', NULL, NULL, 'Jalisco', '18/04/2000', '1', '1');
+INSERT INTO `materias_carrera` (`id`, `materias_carrera_id`, `carrera_materia_id`) VALUES (NULL, '1', '1');
+INSERT INTO `maestros` (`id`, `nombre`, `ap`, `am`, `correo`, `carrera`, `materia`) VALUES (NULL, 'Valentin', 'Elizalde', NULL, NULL, 'Computacion', 'Corridos tumbados');
