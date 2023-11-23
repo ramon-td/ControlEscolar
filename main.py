@@ -14,6 +14,7 @@ main.config(width=900, height=400)
 pestanas =ttk.Notebook(main)
 pestanas.grid(row=0)
 conexion = Conexion()
+conexion.usuarioActivo(0)
 #--------------------------------------------------LOGIN-------------------------------------------------
 pestana_login = ttk.Frame(pestanas)
 pestanas.add(pestana_login, text="Sesión")
@@ -223,15 +224,15 @@ maestro_email_entry = tk.Entry(pestana_maestros, state="disabled")
 maestro_carrera_selection = tk.StringVar(main)
 maestro_carrera_options = conexion.obtenerColumna("carrera", "nombre")
 maestro_carrera_optionMenu = tk.OptionMenu(pestana_maestros, maestro_carrera_selection, *maestro_carrera_options)
-maestro_carrera_optionMenu.configure(state="normal")
+maestro_carrera_optionMenu.configure(state="disabled")
 maestro_materia_selection = tk.StringVar(main)
 maestro_materia_options = conexion.obtenerColumna("materias", "nombre")
 maestro_materia_optionMenu = tk.OptionMenu(pestana_maestros, maestro_materia_selection, *maestro_materia_options)
-maestro_materia_optionMenu.configure(state="normal")
+maestro_materia_optionMenu.configure(state="disabled")
 maestro_grupo_selection = tk.StringVar(main)
 maestro_grupo_options = conexion.obtenerColumna("grupos", "nombre")
 maestro_grupo_optionMenu = tk.OptionMenu(pestana_maestros, maestro_grupo_selection, *maestro_grupo_options)
-maestro_grupo_optionMenu.configure(state="normal")
+maestro_grupo_optionMenu.configure(state="disabled")
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - Botones - - - - - - - - - - - - - - - - - - - - - - -
 maestro_buscar_btn = tk.Button(pestana_maestros, text="Buscar", command=lambda:buscarMaestros())
@@ -284,7 +285,7 @@ maestro_baja_btn.grid(column=5, columnspan=1, row=6, padx=10, pady=10, sticky=tk
 #-------------------------------------------------------MATERIAS ---------------------------------------------------
 pestana_materias = ttk.Frame(pestanas)
 pestanas.add(pestana_materias, text="Materias")
-pestanas.tab(4, state="normal")
+pestanas.tab(4, state="disabled")
 #- - - - - - - - - - - - - - - - - - - - - - - Entries y etiquetas - - - - - - - - - - - - - - - - - - - -
 materia_code_label = tk.Label(pestana_materias, text="Ingrese codigo de materia: ")
 materia_id_label = tk.Label(pestana_materias, text="ID:")
@@ -300,20 +301,20 @@ materia_semestre_entry = tk.Entry(pestana_materias, state="disabled")
 materia_carrera_selection = tk.StringVar(main)
 materia_carrera_options = conexion.obtenerColumna("carrera", "nombre")
 materia_carrera_optionMenu = tk.OptionMenu(pestana_materias, materia_carrera_selection, *materia_carrera_options)
-materia_carrera_optionMenu.configure(state="normal")
+materia_carrera_optionMenu.configure(state="disabled")
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - Botones - - - - - - - - - - - - - - - - - - - - - - -
-materia_buscar_btn = tk.Button(pestana_materias, text="Buscar")
+materia_buscar_btn = tk.Button(pestana_materias, text="Buscar", command=lambda:buscarMaterias())
 materia_buscar_btn.configure(width=10)
-materia_nuevo_btn = tk.Button(pestana_materias, text="Nuevo")
+materia_nuevo_btn = tk.Button(pestana_materias, text="Nuevo", command=lambda:nuevoMateria())
 materia_nuevo_btn.configure(width=10)
-materia_guardar_btn = tk.Button(pestana_materias, text="Guardar")
+materia_guardar_btn = tk.Button(pestana_materias, text="Guardar", command=lambda:guardarMateria())
 materia_guardar_btn.configure(width=10, state="disabled")
-materia_cancelar_btn = tk.Button(pestana_materias, text="Cancelar")
+materia_cancelar_btn = tk.Button(pestana_materias, text="Cancelar", command=lambda:cancelarMateria())
 materia_cancelar_btn.configure(width=10, state="disabled")
-materia_editar_btn = tk.Button(pestana_materias, text="Editar")
+materia_editar_btn = tk.Button(pestana_materias, text="Editar", command=lambda:editarMateria())
 materia_editar_btn.configure(width=10, state="disabled")
-materia_baja_btn = tk.Button(pestana_materias, text="Baja")
+materia_baja_btn = tk.Button(pestana_materias, text="Baja", command=lambda:bajaMateria())
 materia_baja_btn.configure(width=10, state="disabled")
 #- - - - - - - - - - - - - - - - - - - - - - - - - - Posiciones - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -345,7 +346,7 @@ materia_baja_btn.grid(column=5, columnspan=1, row=6, padx=10, pady=10, sticky=tk
 #--------------------------------------------------------GRUPOS ----------------------------------------------------
 pestana_grupos = ttk.Frame(pestanas)
 pestanas.add(pestana_grupos, text="Grupos")
-pestanas.tab(5, state="normal")
+pestanas.tab(5, state="disabled")
 #- - - - - - - - - - - - - - - - - - - - - - - Entries y etiquetas - - - - - - - - - - - - - - - - - - - -
 
 grupo_code_label = tk.Label(pestana_grupos, text="Ingrese codigo de grupo: ")
@@ -370,11 +371,11 @@ grupo_password_entry = tk.Entry(pestana_grupos, state="disabled", show="•")
 grupo_carrera_selection = tk.StringVar(main)
 grupo_carrera_options = conexion.obtenerColumna("carrera", "nombre")
 grupo_carrera_optionMenu = tk.OptionMenu(pestana_grupos, grupo_carrera_selection, *grupo_carrera_options)
-grupo_carrera_optionMenu.configure(state="normal")
+grupo_carrera_optionMenu.configure(state="disabled")
 grupo_materia_selection = tk.StringVar(main)
 grupo_materia_options = conexion.obtenerColumna("materias", "nombre")
 grupo_materia_optionMenu = tk.OptionMenu(pestana_grupos, grupo_materia_selection, *grupo_materia_options)
-grupo_materia_optionMenu.configure(state="normal")
+grupo_materia_optionMenu.configure(state="disabled")
 
 
 
@@ -429,7 +430,7 @@ grupo_baja_btn.grid(column=5, columnspan=1, row=6, padx=10, pady=10, sticky=tk.E
 #--------------------------------------------------------HORARIO ---------------------------------------------------
 pestana_horario = ttk.Frame(pestanas)
 pestanas.add(pestana_horario, text="Horario")
-pestanas.tab(6, state="normal")
+pestanas.tab(6, state="disabled")
 #- - - - - - - - - - - - - - - - - - - - - - - Entries y etiquetas - - - - - - - - - - - - - - - - - - - -
 horario_code_label = tk.Label(pestana_horario, text="Ingrese codigo de grupo: ")
 horario_id_label = tk.Label(pestana_horario, text="ID:")
@@ -440,24 +441,24 @@ horario_id_entry = tk.Entry(pestana_horario, state="disabled")
 horario_turno_selection = tk.StringVar(main)
 horario_turno_options = conexion.obtenerColumna("horario", "turno")
 horario_turno_optionMenu = tk.OptionMenu(pestana_horario, horario_turno_selection, *horario_turno_options)
-horario_turno_optionMenu.configure(state="normal")
+horario_turno_optionMenu.configure(state="disabled")
 horario_hora_selection = tk.StringVar(main)
 horario_hora_options = conexion.obtenerColumna("horario", "hora")
 horario_hora_optionMenu = tk.OptionMenu(pestana_horario, horario_hora_selection, *horario_hora_options)
-horario_hora_optionMenu.configure(state="normal")
+horario_hora_optionMenu.configure(state="disabled")
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - Botones - - - - - - - - - - - - - - - - - - - - - - -
-horario_buscar_btn = tk.Button(pestana_horario, text="Buscar")
+horario_buscar_btn = tk.Button(pestana_horario, text="Buscar", command=lambda:buscarHorario())
 horario_buscar_btn.configure(width=10)
-horario_nuevo_btn = tk.Button(pestana_horario, text="Nuevo")
+horario_nuevo_btn = tk.Button(pestana_horario, text="Nuevo", command=lambda:nuevoHorario())
 horario_nuevo_btn.configure(width=10)
-horario_guardar_btn = tk.Button(pestana_horario, text="Guardar")
+horario_guardar_btn = tk.Button(pestana_horario, text="Guardar", command=lambda:guardarHorario())
 horario_guardar_btn.configure(width=10, state="disabled")
-horario_cancelar_btn = tk.Button(pestana_horario, text="Cancelar")
+horario_cancelar_btn = tk.Button(pestana_horario, text="Cancelar", command=lambda:cancelarHorario())
 horario_cancelar_btn.configure(width=10, state="disabled")
-horario_editar_btn = tk.Button(pestana_horario, text="Editar")
+horario_editar_btn = tk.Button(pestana_horario, text="Editar", command=lambda:editarHorario())
 horario_editar_btn.configure(width=10, state="disabled")
-horario_baja_btn = tk.Button(pestana_horario, text="Baja")
+horario_baja_btn = tk.Button(pestana_horario, text="Baja", command=lambda:bajaHorario())
 horario_baja_btn.configure(width=10, state="disabled")
 #- - - - - - - - - - - - - - - - - - - - - - - - - - Posiciones - - - - - - - - - - - - - - - - - - - - - - -
 horario_code_label.grid(column=1, columnspan=2, row=1, padx=10, pady=10, sticky=tk.E)
@@ -483,7 +484,7 @@ horario_baja_btn.grid(column=5, columnspan=1, row=6, padx=10, pady=10, sticky=tk
 #---------------------------------------------------------SALON ----------------------------------------------------
 pestana_salon = ttk.Frame(pestanas)
 pestanas.add(pestana_salon, text="Salón")
-pestanas.tab(7, state="normal")
+pestanas.tab(7, state="disabled")
 #- - - - - - - - - - - - - - - - - - - - - - - Entries y etiquetas - - - - - - - - - - - - - - - - - - - -
 salon_code_label = tk.Label(pestana_salon, text="Ingrese codigo de salón: ")
 salon_id_label = tk.Label(pestana_salon, text="ID:")
@@ -539,7 +540,7 @@ salon_baja_btn.grid(column=5, columnspan=1, row=6, padx=10, pady=10, sticky=tk.E
 #--------------------------------------------------------CARRERA ---------------------------------------------------
 pestana_carrera = ttk.Frame(pestanas)
 pestanas.add(pestana_carrera, text="Carrera")
-pestanas.tab(8, state="normal")
+pestanas.tab(8, state="disabled")
 #- - - - - - - - - - - - - - - - - - - - - - - Entries y etiquetas - - - - - - - - - - - - - - - - - - - -
 carrera_code_label = tk.Label(pestana_carrera, text="Ingrese codigo de carrera: ")
 carrera_id_label = tk.Label(pestana_carrera, text="ID:")
@@ -547,28 +548,28 @@ carrera_nombre_label = tk.Label(pestana_carrera, text="Nombre de Carrera: ")
 carrera_semestres_label = tk.Label(pestana_carrera, text="Numero de Semestres: ")
 carrera_materia_label = tk.Label(pestana_carrera, text="Materia: ")
 carrera_code_entry = tk.Entry(pestana_carrera)
-carrera_nombre_entry = tk.Entry(pestana_carrera)
-carrera_semestres_entry = tk.Entry(pestana_carrera)
+carrera_nombre_entry = tk.Entry(pestana_carrera, state="disabled")
+carrera_semestres_entry = tk.Entry(pestana_carrera, state="disabled")
 carrera_id_entry = tk.Entry(pestana_carrera, state="disabled")
 
 carrera_materia_selection = tk.StringVar(main)
 carrera_materia_options = conexion.obtenerColumna("materias", "nombre")
 carrera_materia_optionMenu = tk.OptionMenu(pestana_carrera, carrera_materia_selection, *carrera_materia_options)
-carrera_materia_optionMenu.configure(state="normal")
+carrera_materia_optionMenu.configure(state="disabled")
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - Botones - - - - - - - - - - - - - - - - - - - - - - -
 
-carrera_buscar_btn = tk.Button(pestana_carrera, text="Buscar")
+carrera_buscar_btn = tk.Button(pestana_carrera, text="Buscar", command=lambda:buscarCarrera())
 carrera_buscar_btn.configure(width=10)
-carrera_nuevo_btn = tk.Button(pestana_carrera, text="Nuevo")
+carrera_nuevo_btn = tk.Button(pestana_carrera, text="Nuevo", command=lambda:nuevoCarrera())
 carrera_nuevo_btn.configure(width=10)
-carrera_guardar_btn = tk.Button(pestana_carrera, text="Guardar")
+carrera_guardar_btn = tk.Button(pestana_carrera, text="Guardar", command=lambda:guardarCarrera())
 carrera_guardar_btn.configure(width=10, state="disabled")
-carrera_cancelar_btn = tk.Button(pestana_carrera, text="Cancelar")
+carrera_cancelar_btn = tk.Button(pestana_carrera, text="Cancelar", command=lambda:cancelarCarrera())
 carrera_cancelar_btn.configure(width=10, state="disabled")
-carrera_editar_btn = tk.Button(pestana_carrera, text="Editar")
+carrera_editar_btn = tk.Button(pestana_carrera, text="Editar", command=lambda:editarCarrera())
 carrera_editar_btn.configure(width=10, state="disabled")
-carrera_baja_btn = tk.Button(pestana_carrera, text="Baja")
+carrera_baja_btn = tk.Button(pestana_carrera, text="Baja", command=lambda:bajaCarrera())
 carrera_baja_btn.configure(width=10, state="disabled")
 #- - - - - - - - - - - - - - - - - - - - - - - - - - Posiciones - - - - - - - - - - - - - - - - - - - - - - -
 carrera_code_label.grid(column=1, columnspan=2, row=0, padx=10, pady=10, sticky=tk.E)
@@ -599,7 +600,7 @@ carrera_baja_btn.grid(column=5, columnspan=1, row=6, padx=10, pady=10, sticky=tk
 #-------------------------------------------------------PLANEACIÓN -------------------------------------------------
 pestana_planeacion = ttk.Frame(pestanas)
 pestanas.add(pestana_planeacion, text="Planeación")
-pestanas.tab(9, state="normal")
+pestanas.tab(9, state="disabled")
 #==============================================================================================================
 
 #=======================================================AJUSTES DE POSICION====================================
@@ -683,12 +684,13 @@ def llenarOptMenu(tabla, columna):
 
 #-----------------------------------------------------Login----------------------------------------------------
 def login():
-    Objeto = Conexion()
+    log_in = Conexion()
     listaCampos = {username_entry, password_entry}
-    Objeto = Objeto.obtenerObjeto("usuarios", "usuario", username_entry.get())
+    Objeto = log_in.obtenerObjeto("usuarios", "usuario", username_entry.get())
     if validarCampoNoVacio(listaCampos, 1):
         if username_entry.get() == Objeto.get("usuario"):
             if password_entry.get() == Objeto.get("password"):
+                log_in.usuarioActivo(Objeto.get("idusuario"))
                 if Objeto.get("perfil") == "Admin":
                     dormirPestanas("1111111111")
                 elif Objeto.get("perfil") == "Maestro":
@@ -886,6 +888,7 @@ def buscarAlumnos():
         bloquearCampos(True, listaCampos)
 
 def editarAlumno():
+    conexion.obtenerColumnaEspecifica("usuarios", "perfil", "status", "1")
     listaCampos = { alumno_nombre_entry,
                     alumno_apellidoP_entry,
                     alumno_apellidoM_entry,
@@ -1110,6 +1113,340 @@ def bajaMaestro():
 
 #--------------------------------------------------------------------------------------------------------------
 
+#----------------------------------------------------Materias--------------------------------------------------
+def buscarMaterias():
+    listaCampos = {materia_code_entry}
+    if validarCampoNoVacio(listaCampos, 0):
+        Materia = Conexion()
+        Materia = Materia.obtenerObjeto("materias", "id", materia_code_entry.get())
+        if Materia:            
+            materia_editar_btn.configure(state="normal")
+            materia_cancelar_btn.configure(state="normal")
+            materia_baja_btn.configure(state="normal")
+            listaCampos = (materia_id_entry,
+                           materia_asignatura_entry,
+                           materia_creditos_entry,
+                           materia_semestre_entry)
+            listaDatos = ("id", "nombre", "creditos", "semestre")
+            llenarCampos(listaCampos, listaDatos, Materia)
+            materia_carrera_selection.set(Materia.get("carrera_id"))
+
+            return 0
+        else:
+            messagebox.showerror(title="No se encuentra", message= "No se encontró el código")
+    else: 
+        objetos = []
+        mensaje = "Lista de Materias: \n"
+        conexion = Conexion()
+        ids = conexion.obtenerColumna("materias", "id")
+        for idindex in range(0, len(ids)):
+            objetos.append(conexion.obtenerObjeto("materias", "id", ids[idindex]))
+            mensaje += "\nID: " + str(objetos[idindex].get("id")) + "  \t|  Materia: " + str(objetos[idindex].get("nombre")) + "\n"
+        messagebox.showinfo(title="Búsqueda general", message=mensaje)
+        listaCampos = ( materia_id_entry,
+                        materia_asignatura_entry,
+                        materia_creditos_entry,
+                        materia_semestre_entry)
+        bloquearCampos(False, listaCampos)
+        limpiarCampos(listaCampos)
+        bloquearCampos(True, listaCampos)
+
+def editarMateria():
+    listaCampos = { materia_asignatura_entry,
+                    materia_creditos_entry,
+                    materia_semestre_entry}
+    listaCamposBloquear = {materia_editar_btn,
+                           materia_nuevo_btn,
+                           materia_baja_btn,
+                           materia_buscar_btn,
+                           materia_code_entry}
+    listaOtros = {materia_carrera_optionMenu,
+                  materia_cancelar_btn,
+                  materia_guardar_btn}
+    bloquearCampos(False, listaCampos)
+    bloquearCampos(False, listaOtros)
+
+    bloquearCampos(True, listaCamposBloquear)
+
+def cancelarMateria():
+    listaCampos = {materia_code_entry, 
+                    materia_asignatura_entry,
+                    materia_creditos_entry,
+                    materia_semestre_entry}
+    listaCamposBloquear = {materia_nuevo_btn,
+                           materia_buscar_btn,
+                           materia_code_entry}
+    listaOtros = {materia_baja_btn,
+                  materia_editar_btn,
+                  materia_carrera_optionMenu,
+                  materia_cancelar_btn,
+                  materia_guardar_btn}
+    bloquearCampos(False, listaCampos)
+    limpiarCampos(listaCampos)
+    bloquearCampos(True, listaCampos)
+    bloquearCampos(True, listaOtros)
+    bloquearCampos(False, listaCamposBloquear)
+
+def guardarMateria():
+    Materia = {"nombre" : materia_asignatura_entry.get(),
+                "creditos" : materia_creditos_entry.get(),
+                "semestre" : materia_semestre_entry.get(),
+                "carrera_id" : materia_carrera_selection.get()}
+    objeto = Conexion()
+    listaCampos = {materia_id_entry}
+    if validarCampoNoVacio(listaCampos, 0):
+        messagebox.showinfo(title="Operación exitosa", message= "Se ha editado el registro con exito"), cancelarMateria() if objeto.actualizarObjeto(Materia, "materias", "id", materia_id_entry.get()) == 0 else  messagebox.showerror(title="Error", message= "No se ha podido realizar la operación")
+    else:
+        listaCampos = {materia_asignatura_entry, materia_creditos_entry, materia_semestre_entry}
+        if validarCampoNoVacio(listaCampos, 1):
+            if objeto.insertarNuevoObjeto(Materia, "materias") == 0:
+                Materia = objeto.obtenerObjeto("materias", "nombre", materia_asignatura_entry.get())
+                messagebox.showinfo(title="Operación exitosa", message= "Se ha agregado el registro con exito\nEl ID de la nueva Materia es: " + str(Materia.get("id")))
+                cancelarMateria() 
+                materia_code_entry.configure(state="normal")
+                materia_code_entry.delete(0, tk.END)
+                materia_code_entry.insert(0, Materia.get("id"))
+                buscarMaterias()
+            else:  
+                messagebox.showerror(title="Error", message= "No se ha podido agregar el registro")
+
+def nuevoMateria():
+    cancelarMateria()
+    editarMateria()
+
+def bajaMateria():
+    listaCampos = {materia_id_entry}
+    if validarCampoNoVacio(listaCampos, 1):
+        objeto = Conexion()
+        popupWindow = tk.Toplevel(main)
+        popupWindow.wm_title("¡Advertencia!")
+        popupWindow.tkraise(main)
+        tk.Label(popupWindow, text="¿Está seguro que desea eliminar el registro con ID = " + str(materia_id_entry.get()) + "?\nEsta operación no se puede deshacer").grid(columnspan=2, column=0, row=0, padx=15, pady=15)
+        tk.Button(popupWindow, text="Cancelar", command=lambda:[popupWindow.destroy()]).grid(column=0, row=1, padx=10, pady=10)
+        tk.Button(popupWindow, text="Eliminar", command=lambda:[messagebox.showinfo(title="Operación exitosa", message="Se ha eliminado el registro") if
+                                                                objeto.eliminarObjeto("materias", str(materia_id_entry.get()), "id") == 0 else 
+                                                                messagebox.showerror(title="Operación fallida", message="No se ha podido eliminar el registro"),
+                                                                popupWindow.destroy(), cancelarMateria()]).grid(column=1, row=1, padx=10, pady=10)
+
+#--------------------------------------------------------------------------------------------------------------
+
+#----------------------------------------------------Horario--------------------------------------------------
+def buscarHorario():
+    listaCampos = {horario_code_entry}
+    if validarCampoNoVacio(listaCampos, 0):
+        Horario = Conexion()
+        Horario = Horario.obtenerObjeto("horario", "id", horario_code_entry.get())
+        if Horario:            
+            horario_editar_btn.configure(state="normal")
+            horario_cancelar_btn.configure(state="normal")
+            horario_baja_btn.configure(state="normal")
+            listaCampos = (horario_id_entry, horario_id_entry)
+            listaDatos = ("id", "id")
+            llenarCampos(listaCampos, listaDatos, Horario)
+            horario_turno_selection.set(Horario.get("turno"))
+            horario_hora_selection.set(Horario.get("hora"))
+            return 0
+        else:
+            messagebox.showerror(title="No se encuentra", message= "No se encontró el código")
+    else: 
+        objetos = []
+        mensaje = "Lista de Horarios: \n"
+        conexion = Conexion()
+        ids = conexion.obtenerColumna("horario", "id")
+        for idindex in range(0, len(ids)):
+            objetos.append(conexion.obtenerObjeto("horario", "id", ids[idindex]))
+            mensaje += "\nID: " + str(objetos[idindex].get("id")) + "  \t|  Horario: " + str(objetos[idindex].get("hora")) + "\n"
+        messagebox.showinfo(title="Búsqueda general", message=mensaje)
+        listaCampos = (horario_id_entry, horario_id_entry)
+        bloquearCampos(False, listaCampos)
+        limpiarCampos(listaCampos)
+        bloquearCampos(True, listaCampos)
+
+def editarHorario():
+    listaCamposBloquear = {horario_editar_btn,
+                           horario_nuevo_btn,
+                           horario_baja_btn,
+                           horario_buscar_btn,
+                           horario_code_entry}
+    listaOtros = {horario_turno_optionMenu,
+                  horario_hora_optionMenu,
+                  horario_cancelar_btn,
+                  horario_guardar_btn}
+    bloquearCampos(False, listaOtros)
+    bloquearCampos(True, listaCamposBloquear)
+
+def cancelarHorario():
+    listaCampos = {horario_code_entry, horario_code_entry}
+    listaCamposBloquear = {horario_nuevo_btn,
+                           horario_buscar_btn,
+                           horario_code_entry}
+    listaOtros = {horario_baja_btn,
+                  horario_editar_btn,
+                  horario_turno_optionMenu,
+                  horario_hora_optionMenu,
+                  horario_cancelar_btn,
+                  horario_guardar_btn}
+    bloquearCampos(False, listaCampos)
+    limpiarCampos(listaCampos)
+    bloquearCampos(True, listaCampos)
+    bloquearCampos(True, listaOtros)
+    bloquearCampos(False, listaCamposBloquear)
+
+def guardarHorario():
+    Horario = {"turno" : horario_turno_selection.get(),
+                "hora" : horario_hora_selection.get()}
+    objeto = Conexion()
+    listaCampos = {horario_id_entry, horario_id_entry}
+    if validarCampoNoVacio(listaCampos, 0):
+        messagebox.showinfo(title="Operación exitosa", message= "Se ha editado el registro con exito"), cancelarHorario() if objeto.actualizarObjeto(Horario, "horario", "id", horario_id_entry.get()) == 0 else  messagebox.showerror(title="Error", message= "No se ha podido realizar la operación")
+    else:
+        listaCampos = {horario_turno_selection, horario_hora_selection}
+        if validarCampoNoVacio(listaCampos, 1):
+            if objeto.insertarNuevoObjeto(Horario, "horario") == 0:
+                Horario = objeto.obtenerObjeto("horario", "hora", horario_hora_selection.get())
+                messagebox.showinfo(title="Operación exitosa", message= "Se ha agregado el registro con exito\nEl ID de la nueva Horario es: " + str(Horario.get("id")))
+                cancelarHorario() 
+                horario_code_entry.configure(state="normal")
+                horario_code_entry.delete(0, tk.END)
+                horario_code_entry.insert(0, Horario.get("id"))
+                buscarHorario()
+            else:  
+                messagebox.showerror(title="Error", message= "No se ha podido agregar el registro")
+
+def nuevoHorario():
+    cancelarHorario()
+    editarHorario()
+
+def bajaHorario():
+    listaCampos = {horario_id_entry, horario_id_entry}
+    if validarCampoNoVacio(listaCampos, 1):
+        objeto = Conexion()
+        popupWindow = tk.Toplevel(main)
+        popupWindow.wm_title("¡Advertencia!")
+        popupWindow.tkraise(main)
+        tk.Label(popupWindow, text="¿Está seguro que desea eliminar el registro con ID = " + str(horario_id_entry.get()) + "?\nEsta operación no se puede deshacer").grid(columnspan=2, column=0, row=0, padx=15, pady=15)
+        tk.Button(popupWindow, text="Cancelar", command=lambda:[popupWindow.destroy()]).grid(column=0, row=1, padx=10, pady=10)
+        tk.Button(popupWindow, text="Eliminar", command=lambda:[messagebox.showinfo(title="Operación exitosa", message="Se ha eliminado el registro") if
+                                                                objeto.eliminarObjeto("horario", str(horario_id_entry.get()), "id") == 0 else 
+                                                                messagebox.showerror(title="Operación fallida", message="No se ha podido eliminar el registro"),
+                                                                popupWindow.destroy(), cancelarHorario()]).grid(column=1, row=1, padx=10, pady=10)
+
+#--------------------------------------------------------------------------------------------------------------
+
+#------------------------------------------------------Carrera---------------------------------------------------
+def buscarCarrera():
+    listaCampos = {carrera_code_entry}
+    if validarCampoNoVacio(listaCampos, 0):
+        Carrera = Conexion()
+        Carrera = Carrera.obtenerObjeto("carrera", "id", carrera_code_entry.get())
+        if Carrera:            
+            carrera_editar_btn.configure(state="normal")
+            carrera_cancelar_btn.configure(state="normal")
+            carrera_baja_btn.configure(state="normal")
+            listaCampos = ( carrera_id_entry,
+                            carrera_nombre_entry,
+                            carrera_semestres_entry)
+            listaDatos = ("id", "nombre", "semestres")
+            llenarCampos(listaCampos, listaDatos, Carrera)
+            carrera_materia_optionMenu.configure(state="normal")
+            carrera_materia_selection.set(Carrera.get("materias"))
+            carrera_materia_optionMenu.configure(state="disabled")
+            return 0
+        else:
+            messagebox.showerror(title="No se encuentra", message= "No se encontró el código")
+    else: 
+        objetos = []
+        mensaje = "Lista de Carreras: \n"
+        conexion = Conexion()
+        ids = conexion.obtenerColumna("carrera", "id")
+        for idindex in range(0, len(ids)):
+            objetos.append(conexion.obtenerObjeto("carrera", "id", ids[idindex]))
+            mensaje += "\nID: " + str(objetos[idindex].get("id")) + "  \t|  Carrera: " + str(objetos[idindex].get("nombre")) + "\n"
+        messagebox.showinfo(title="Búsqueda general", message=mensaje)
+        listaCampos = ( carrera_id_entry,
+                        carrera_nombre_entry,
+                        carrera_semestres_entry)
+        bloquearCampos(False, listaCampos)
+        limpiarCampos(listaCampos)
+        bloquearCampos(True, listaCampos)
+
+def editarCarrera():
+    listaCampos = { carrera_nombre_entry,
+                    carrera_semestres_entry}
+    listaCamposBloquear = {carrera_editar_btn,
+                           carrera_nuevo_btn,
+                           carrera_baja_btn,
+                           carrera_buscar_btn,
+                           carrera_code_entry}
+    listaOtros = {carrera_editar_btn,
+                  carrera_cancelar_btn,
+                  carrera_guardar_btn,
+                  carrera_materia_optionMenu}
+    bloquearCampos(False, listaCampos)
+    bloquearCampos(False, listaOtros)
+    bloquearCampos(True, listaCamposBloquear)
+
+def cancelarCarrera():
+    listaCampos = {carrera_code_entry, 
+                    carrera_id_entry,
+                    carrera_nombre_entry,
+                    carrera_semestres_entry}
+    listaCamposBloquear = {carrera_nuevo_btn,
+                           carrera_buscar_btn,
+                           carrera_code_entry}
+    listaOtros = {carrera_baja_btn,
+                  carrera_editar_btn,
+                  carrera_cancelar_btn,
+                  carrera_guardar_btn,
+                  carrera_materia_optionMenu}
+    bloquearCampos(False, listaCampos)
+    limpiarCampos(listaCampos)
+    bloquearCampos(True, listaCampos)
+    bloquearCampos(True, listaOtros)
+    bloquearCampos(False, listaCamposBloquear)
+
+def guardarCarrera():
+    Carrera = {"nombre" : carrera_nombre_entry.get(),
+               "semestres" : carrera_semestres_entry.get(),
+                "materias" : int(carrera_materia_selection.get())}
+    objeto = Conexion()
+    listaCampos = {carrera_id_entry}
+    if validarCampoNoVacio(listaCampos, 0):
+        messagebox.showinfo(title="Operación exitosa", message= "Se ha editado el registro con exito"), cancelarCarrera() if objeto.actualizarObjeto(Carrera, "carrera", "id", int(carrera_id_entry.get())) == 0 else  messagebox.showerror(title="Error", message= "No se ha podido realizar la operación")
+    else:
+        listaCampos = {carrera_nombre_entry}
+        if validarCampoNoVacio(listaCampos, 1):
+            if objeto.insertarNuevoObjeto(Carrera, "carrera") == 0:
+                Carrera = objeto.obtenerObjeto("carrera", "nombre", carrera_nombre_entry.get())
+                messagebox.showinfo(title="Operación exitosa", message= "Se ha agregado el registro con exito\nEl ID del nuevo Carrera es: " + str(Carrera.get("id")))
+                cancelarCarrera() 
+                carrera_code_entry.configure(state="normal")
+                carrera_code_entry.delete(0, tk.END)
+                carrera_code_entry.insert(0, Carrera.get("id"))
+                buscarCarrera()
+            else:  
+                messagebox.showerror(title="Error", message= "No se ha podido agregar el registro")
+
+def nuevoCarrera():
+    cancelarCarrera()
+    editarCarrera()
+
+def bajaCarrera():
+    listaCampos = {carrera_id_entry}
+    if validarCampoNoVacio(listaCampos, 1):
+        objeto = Conexion()
+        popupWindow = tk.Toplevel(main)
+        popupWindow.wm_title("¡Advertencia!")
+        popupWindow.tkraise(main)
+        tk.Label(popupWindow, text="¿Está seguro que desea eliminar el registro con ID = " + str(carrera_id_entry.get()) + "?\nEsta operación no se puede deshacer").grid(columnspan=2, column=0, row=0, padx=15, pady=15)
+        tk.Button(popupWindow, text="Cancelar", command=lambda:[popupWindow.destroy()]).grid(column=0, row=1, padx=10, pady=10)
+        tk.Button(popupWindow, text="Eliminar", command=lambda:[messagebox.showinfo(title="Operación exitosa", message="Se ha eliminado el registro") if
+                                                                objeto.eliminarObjeto("carrera", str(carrera_id_entry.get()), "id") == 0 else 
+                                                                messagebox.showerror(title="Operación fallida", message="No se ha podido eliminar el registro"),
+                                                                popupWindow.destroy(), cancelarCarrera()]).grid(column=1, row=1, padx=10, pady=10)
+
+#--------------------------------------------------------------------------------------------------------------
+
 #------------------------------------------------------Salon---------------------------------------------------
 def buscarSalon():
     listaCampos = {salon_code_entry}
@@ -1221,7 +1558,7 @@ def bajaSalon():
 
 #===============================================================================================================
 
-dormirPestanas("1111111111")
-pestanas.select(pestana_maestros)
+dormirPestanas("1000000000")
+pestanas.select(pestana_login)
 
 main.mainloop()

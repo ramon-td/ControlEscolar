@@ -14,6 +14,20 @@ class Conexion:
         except Error as ex:
             print("Error al intentar conexion: " + str(ex))
     
+    def usuarioActivo(self, id):
+        if self.conexion.is_connected():
+            try:
+                sentence = ""
+                cursor = self.conexion.cursor()
+                cursor.execute("UPDATE usuarios SET status = 0;")
+                self.conexion.commit()
+                cursor.execute("UPDATE usuarios SET status = 1 WHERE idusuario = \"" + str(id) + "\";")
+                self.conexion.commit()
+                return 0
+            except Error as ex:
+                print("Error al intentar conexion" + str(ex))
+                return 1
+
     def obtenerColumna(self, tabla, columna):
         if self.conexion.is_connected():
             try:
@@ -29,6 +43,21 @@ class Conexion:
                         listaColumna += str(campo)[1:-2],
 
                 return listaColumna
+            
+            except Error as ex:
+                print("Error al intentar conexion" + str(ex))
+
+    def obtenerColumnaEspecifica(self, tabla, columna, fila, que):
+        if self.conexion.is_connected():
+            try:
+                cursor = self.conexion.cursor()
+                cursor.execute("SELECT " + columna + " FROM " + tabla + " WHERE " + fila + " = " + str(que) + ";")
+                resultados = cursor.fetchall()
+                for campo in resultados: 
+                    print(campo)
+                print("SELECT " + columna + " FROM " + tabla + " WHERE " + fila + " = \"" + que + "\";")
+                print(resultados)
+                return resultados
             
             except Error as ex:
                 print("Error al intentar conexion" + str(ex))
