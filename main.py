@@ -115,7 +115,7 @@ pestana_alumnos = ttk.Frame(pestanas)
 pestanas.add(pestana_alumnos, text="Alumnos")
 pestanas.tab(2, state="normal")
 
-#- - - - - - - - - - - - - - - - - - - - - - - Entryes y etiquetas - - - - - - - - - - - - - - - - - - - -
+#- - - - - - - - - - - - - - - - - - - - - - - Entries y etiquetas - - - - - - - - - - - - - - - - - - - -
 alumno_code_label = tk.Label(pestana_alumnos, text="Ingrese codigo de alumno: ")
 alumno_id_label = tk.Label(pestana_alumnos, text="ID:")
 alumno_nombre_label = tk.Label(pestana_alumnos, text="Nombre: ")
@@ -125,7 +125,7 @@ alumno_email_label = tk.Label(pestana_alumnos, text="Email: ")
 alumno_estado_label = tk.Label(pestana_alumnos, text="Estado: ")
 alumno_fechanac_label = tk.Label(pestana_alumnos, text="Fech. de Nac.: ")
 alumno_carrera_label = tk.Label(pestana_alumnos, text="Carrera: ")
-alumno_materia_label = tk.Label(pestana_alumnos, text="Materia: ")
+alumno_grupo_label = tk.Label(pestana_alumnos, text="Grupo: ")
 alumno_code_entry = tk.Entry(pestana_alumnos)
 alumno_id_entry = tk.Entry(pestana_alumnos, state="disabled")
 alumno_nombre_entry = tk.Entry(pestana_alumnos, state="disabled")
@@ -135,28 +135,29 @@ alumno_email_entry = tk.Entry(pestana_alumnos, state="disabled")
 alumno_estado_selection = tk.StringVar(value="Jalisco")
 alumno_estado_options = ("Aguascalientes", "Colima", "Jalisco", "Nayarit")
 alumno_estado_optionMenu = tk.OptionMenu(pestana_alumnos, alumno_estado_selection, *alumno_estado_options)
-alumno_fechanac_entry = tk.Entry(pestana_alumnos, state="disabled", show="•")
+alumno_estado_optionMenu.configure(state="disabled")
+alumno_fechanac_entry = tk.Entry(pestana_alumnos, state="disabled")
 alumno_carrera_selection = tk.StringVar(main)
-alumno_carrera_options = ("Administrador", "Maestro", "Alumno", "TEST")
+alumno_carrera_options = ("Electronica", "Computacion", "Informatica")
 alumno_carrera_optionMenu = tk.OptionMenu(pestana_alumnos, alumno_carrera_selection, *alumno_carrera_options)
-alumno_carrera_optionMenu.configure(state="normal")
-alumno_materia_selection = tk.StringVar(main)
-alumno_materia_options = ("Administrador", "Maestro", "Alumno", "MATEMATICAS")
-alumno_materia_optionMenu = tk.OptionMenu(pestana_alumnos, alumno_materia_selection, *alumno_materia_options)
-alumno_materia_optionMenu.configure(state="normal")
+alumno_carrera_optionMenu.configure(state="disabled")
+alumno_grupo_selection = tk.StringVar(main)
+alumno_grupo_options = ("Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4")
+alumno_grupo_optionMenu = tk.OptionMenu(pestana_alumnos, alumno_grupo_selection, *alumno_grupo_options)
+alumno_grupo_optionMenu.configure(state="disabled")
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - Botones - - - - - - - - - - - - - - - - - - - - - - -
-alumno_buscar_btn = tk.Button(pestana_alumnos, text="Buscar")
+alumno_buscar_btn = tk.Button(pestana_alumnos, text="Buscar", command=lambda:buscarAlumnos())
 alumno_buscar_btn.configure(width=10)
-alumno_nuevo_btn = tk.Button(pestana_alumnos, text="Nuevo")
+alumno_nuevo_btn = tk.Button(pestana_alumnos, text="Nuevo", command=lambda:nuevoAlumno())
 alumno_nuevo_btn.configure(width=10)
-alumno_guardar_btn = tk.Button(pestana_alumnos, text="Guardar")
+alumno_guardar_btn = tk.Button(pestana_alumnos, text="Guardar", command=lambda:guardarAlumno())
 alumno_guardar_btn.configure(width=10, state="disabled")
-alumno_cancelar_btn = tk.Button(pestana_alumnos, text="Cancelar")
+alumno_cancelar_btn = tk.Button(pestana_alumnos, text="Cancelar", command=lambda:cancelarAlumno())
 alumno_cancelar_btn.configure(width=10, state="disabled")
-alumno_editar_btn = tk.Button(pestana_alumnos, text="Editar")
+alumno_editar_btn = tk.Button(pestana_alumnos, text="Editar", command=lambda:editarAlumno())
 alumno_editar_btn.configure(width=10, state="disabled")
-alumno_baja_btn = tk.Button(pestana_alumnos, text="Baja")
+alumno_baja_btn = tk.Button(pestana_alumnos, text="Baja", command=lambda:bajaAlumno())
 alumno_baja_btn.configure(width=10, state="disabled")
 #- - - - - - - - - - - - - - - - - - - - - - - - - - Posiciones - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -169,7 +170,7 @@ alumno_email_label.grid(column=0, columnspan=1, row=5, padx=10, pady=10, sticky=
 alumno_estado_label.grid(column=2, columnspan=2, row=1, padx=10, pady=10, sticky=tk.E)
 alumno_fechanac_label.grid(column=2, columnspan=2, row=2, padx=10, pady=10, sticky=tk.E)
 alumno_carrera_label.grid(column=3, columnspan=1, row=3, padx=10, pady=10, sticky=tk.E)
-alumno_materia_label.grid(column=3, columnspan=1, row=4, padx=10, pady=10, sticky=tk.E)
+alumno_grupo_label.grid(column=3, columnspan=1, row=4, padx=10, pady=10, sticky=tk.E)
 alumno_code_entry.grid(column=3, columnspan=2, row=0, padx=10, pady=10, sticky=tk.W)
 alumno_code_entry.configure(width=30)
 alumno_id_entry.grid(column=1, columnspan=1, row=1, padx=10, pady=10, sticky=tk.W)
@@ -188,8 +189,8 @@ alumno_fechanac_entry.grid(column=4, columnspan=2, row=2, padx=10, pady=10, stic
 alumno_fechanac_entry.configure(width=30)
 alumno_carrera_optionMenu.grid(column=4, columnspan=2, row=3, padx=10, pady=10, sticky=tk.W)
 alumno_carrera_optionMenu.configure(width=20)
-alumno_materia_optionMenu.grid(column=4, columnspan=2, row=4, padx=10, pady=10, sticky=tk.W)
-alumno_materia_optionMenu.configure(width=20)
+alumno_grupo_optionMenu.grid(column=4, columnspan=2, row=4, padx=10, pady=10, sticky=tk.W)
+alumno_grupo_optionMenu.configure(width=20)
 alumno_buscar_btn.grid(column=5, columnspan=1, row=0, padx=10, pady=10, sticky=tk.E)
 alumno_nuevo_btn.grid(column=1, columnspan=1, row=6, padx=10, pady=10, sticky=tk.E)
 alumno_guardar_btn.grid(column=2, columnspan=1, row=6, padx=10, pady=10, sticky=tk.E)
@@ -773,8 +774,7 @@ def cancelarUsuario():
                     user_email_entry, 
                     user_username_entry, 
                     user_password_entry}
-    listaCamposBloquear = {user_editar_btn,
-                           user_nuevo_btn,
+    listaCamposBloquear = {user_nuevo_btn,
                            user_buscar_btn,
                            user_code_entry}
     listaOtros = {user_editar_btn,
@@ -836,9 +836,146 @@ def bajaUsuario():
 
 
 #--------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------Alumnos--------------------------------------------------
+def buscarAlumnos():
+    listaCampos = {alumno_code_entry}
+    if validarCampoNoVacio(listaCampos, 0):
+        Alumno = Conexion()
+        Alumno = Alumno.obtenerObjeto("alumnos", "id", alumno_code_entry.get())
+        if Alumno:            
+            alumno_editar_btn.configure(state="normal")
+            alumno_cancelar_btn.configure(state="normal")
+            alumno_baja_btn.configure(state="normal")
+            listaCampos = ( alumno_id_entry,
+                            alumno_nombre_entry,
+                            alumno_apellidoP_entry,
+                            alumno_apellidoM_entry,
+                            alumno_email_entry,
+                            alumno_fechanac_entry)
+            listaDatos = ("id", "nombre", "ap", "am", "correo", "fechanacimiento")
+            llenarCampos(listaCampos, listaDatos, Alumno)
+            alumno_estado_selection.set(Alumno.get("estado"))    
+            alumno_carrera_selection.set(Alumno.get("carrera_id"))    
+            alumno_grupo_selection.set(Alumno.get("grupo_id"))    
+
+            return 0
+        else:
+            messagebox.showerror(title="No se encuentra", message= "No se encontró el código")
+    else: 
+        objetos = []
+        mensaje = "Lista de alumnos: \n"
+        conexion = Conexion()
+        ids = conexion.obtenerColumna("alumnos", "id")
+        for idindex in range(0, len(ids)):
+            objetos.append(conexion.obtenerObjeto("alumnos", "id", ids[idindex]))
+            mensaje += "\nID: " + str(objetos[idindex].get("id")) + "  \t|  Alumno: " + str(objetos[idindex].get("nombre")) + "\n"
+        messagebox.showinfo(title="Búsqueda general", message=mensaje)
+        listaCampos = ( alumno_id_entry,
+                        alumno_nombre_entry,
+                        alumno_apellidoP_entry,
+                        alumno_apellidoM_entry,
+                        alumno_email_entry,
+                        alumno_fechanac_entry)
+        bloquearCampos(False, listaCampos)
+        limpiarCampos(listaCampos)
+        bloquearCampos(True, listaCampos)
+
+def editarAlumno():
+    listaCampos = { alumno_nombre_entry,
+                    alumno_apellidoP_entry,
+                    alumno_apellidoM_entry,
+                    alumno_email_entry,
+                    alumno_fechanac_entry}
+    listaCamposBloquear = {alumno_editar_btn,
+                           alumno_nuevo_btn,
+                           alumno_baja_btn,
+                           alumno_buscar_btn,
+                           alumno_code_entry}
+    listaOtros = {alumno_editar_btn,
+                  alumno_grupo_optionMenu,
+                  alumno_estado_optionMenu,
+                  alumno_carrera_optionMenu,
+                  alumno_cancelar_btn,
+                  alumno_guardar_btn}
+    bloquearCampos(False, listaCampos)
+    bloquearCampos(False, listaOtros)
+    bloquearCampos(True, listaCamposBloquear)
+
+def cancelarAlumno():
+    listaCampos = {alumno_code_entry, 
+                    alumno_id_entry,
+                    alumno_nombre_entry, 
+                    alumno_apellidoP_entry, 
+                    alumno_apellidoM_entry, 
+                    alumno_email_entry,
+                    alumno_fechanac_entry}
+    listaCamposBloquear = {alumno_nuevo_btn,
+                           alumno_buscar_btn,
+                           alumno_code_entry}
+    listaOtros = {alumno_baja_btn,
+                  alumno_editar_btn,
+                  alumno_grupo_optionMenu,
+                  alumno_estado_optionMenu,
+                  alumno_carrera_optionMenu,
+                  alumno_cancelar_btn,
+                  alumno_guardar_btn}
+    bloquearCampos(False, listaCampos)
+    limpiarCampos(listaCampos)
+    bloquearCampos(True, listaCampos)
+    bloquearCampos(True, listaOtros)
+    bloquearCampos(False, listaCamposBloquear)
+    # buscarAlumnos()
+
+def guardarAlumno():
+    Alumno = {"nombre" : alumno_nombre_entry.get(),
+                "ap" : alumno_apellidoP_entry.get(),
+                "am" : alumno_apellidoM_entry.get(),
+                "correo" : alumno_email_entry.get(),
+                "estado" : alumno_estado_selection.get(),
+                "fechanacimiento" : alumno_fechanac_entry.get(),
+                "carrera_id" : alumno_carrera_selection.get(),
+                "grupo_id" : alumno_grupo_selection.get()}
+    objeto = Conexion()
+    listaCampos = {alumno_id_entry}
+    if validarCampoNoVacio(listaCampos, 0):
+        messagebox.showinfo(title="Operación exitosa", message= "Se ha editado el registro con exito"), cancelarAlumno() if objeto.actualizarObjeto(Alumno, "alumnos", "id", alumno_id_entry.get()) == 0 else  messagebox.showerror(title="Error", message= "No se ha podido realizar la operación")
+    else:
+        listaCampos = {alumno_nombre_entry, alumno_apellidoP_entry}
+        if validarCampoNoVacio(listaCampos, 1):
+            if objeto.insertarNuevoObjeto(Alumno, "alumnos") == 0:
+                Alumno = objeto.obtenerObjeto("alumnos", "nombre", alumno_nombre_entry.get())
+                messagebox.showinfo(title="Operación exitosa", message= "Se ha agregado el registro con exito\nEl ID del nuevo Alumno es: " + str(Alumno.get("id")))
+                cancelarAlumno() 
+                alumno_code_entry.configure(state="normal")
+                alumno_code_entry.delete(0, tk.END)
+                alumno_code_entry.insert(0, Alumno.get("id"))
+                buscarAlumnos()
+            else:  
+                messagebox.showerror(title="Error", message= "No se ha podido agregar el registro")
+
+def nuevoAlumno():
+    cancelarAlumno()
+    editarAlumno()
+
+def bajaAlumno():
+    listaCampos = {alumno_id_entry}
+    if validarCampoNoVacio(listaCampos, 1):
+        objeto = Conexion()
+        popupWindow = tk.Toplevel(main)
+        popupWindow.wm_title("¡Advertencia!")
+        popupWindow.tkraise(main)
+        tk.Label(popupWindow, text="¿Está seguro que desea eliminar el registro con ID = " + str(alumno_id_entry.get()) + "?\nEsta operación no se puede deshacer").grid(columnspan=2, column=0, row=0, padx=15, pady=15)
+        tk.Button(popupWindow, text="Cancelar", command=lambda:[popupWindow.destroy()]).grid(column=0, row=1, padx=10, pady=10)
+        tk.Button(popupWindow, text="Eliminar", command=lambda:[messagebox.showinfo(title="Operación exitosa", message="Se ha eliminado el registro") if
+                                                                objeto.eliminarObjeto("alumnos", str(alumno_id_entry.get()), "id") == 0 else 
+                                                                messagebox.showerror(title="Operación fallida", message="No se ha podido eliminar el registro"),
+                                                                popupWindow.destroy(), cancelarAlumno()]).grid(column=1, row=1, padx=10, pady=10)
+
+
+#--------------------------------------------------------------------------------------------------------------
 #===============================================================================================================
 
 dormirPestanas("1111111111")
-pestanas.select(pestana_maestros)
+pestanas.select(pestana_alumnos)
 
 main.mainloop()
