@@ -51,10 +51,11 @@ class Conexion:
         if self.conexion.is_connected():
             try:
                 cursor = self.conexion.cursor()
-                cursor.execute("SELECT " + columna + " FROM " + tabla + " WHERE " + fila + " = " + str(que) + ";")
-                resultados = cursor.fetchall()
-                for campo in resultados: 
-                    print(campo)
+                # cursor.execute("SELECT " + columna + " FROM " + tabla + " WHERE " + fila + " = " + str(que) )
+                cursor.execute("SELECT idusuario FROM usuarios WHERE status = '1'")
+                resultados = cursor.fetchone()
+                # for campo in resultados: 
+                #     print(campo)
                 print("SELECT " + columna + " FROM " + tabla + " WHERE " + fila + " = \"" + que + "\";")
                 print(resultados)
                 return resultados

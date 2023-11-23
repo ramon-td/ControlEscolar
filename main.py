@@ -495,7 +495,7 @@ salon_nombre_entry = tk.Entry(pestana_salon, state="disabled")
 salon_id_entry = tk.Entry(pestana_salon, state="disabled")
 
 salon_edificio_selection = tk.StringVar(main)
-salon_edificio_options = conexion.obtenerColumna("salon", "edificio")
+salon_edificio_options = ("Edificio 1", "Edificio 2", "Edificio X")
 salon_edificio_optionMenu = tk.OptionMenu(pestana_salon, salon_edificio_selection, *salon_edificio_options)
 salon_edificio_optionMenu.configure(state="disabled")
 
@@ -1408,7 +1408,7 @@ def cancelarCarrera():
 def guardarCarrera():
     Carrera = {"nombre" : carrera_nombre_entry.get(),
                "semestres" : carrera_semestres_entry.get(),
-                "materias" : int(carrera_materia_selection.get())}
+                "materias" : carrera_materia_selection.get()}
     objeto = Conexion()
     listaCampos = {carrera_id_entry}
     if validarCampoNoVacio(listaCampos, 0):
@@ -1517,7 +1517,7 @@ def cancelarSalon():
 
 def guardarSalon():
     Salon = {"nombre" : salon_nombre_entry.get(),
-             "edificio" : int(salon_edificio_selection.get())}
+             "edificio" : salon_edificio_selection.get()}
     objeto = Conexion()
     listaCampos = {salon_id_entry}
     if validarCampoNoVacio(listaCampos, 0):
@@ -1559,6 +1559,7 @@ def bajaSalon():
 #===============================================================================================================
 
 dormirPestanas("1000000000")
+#dormirPestanas("1111111111")
 pestanas.select(pestana_login)
 
 main.mainloop()
