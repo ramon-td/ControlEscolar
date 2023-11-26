@@ -14,7 +14,7 @@ main.config(width=900, height=400)
 pestanas =ttk.Notebook(main)
 pestanas.grid(row=0)
 conexion = Conexion()
-conexion.usuarioActivo(0)
+# conexion.usuarioActivo(0)
 #--------------------------------------------------LOGIN-------------------------------------------------
 pestana_login = ttk.Frame(pestanas)
 pestanas.add(pestana_login, text="Sesión")
@@ -847,12 +847,13 @@ def bajaUsuario():
 def buscarAlumnos():
     listaCampos = {alumno_code_entry}
     if validarCampoNoVacio(listaCampos, 0):
-        Alumno = Conexion()
-        Alumno = Alumno.obtenerObjeto("alumnos", "id", alumno_code_entry.get())
+        conexion = Conexion()
+        Alumno = conexion.obtenerObjeto("alumnos", "id", alumno_code_entry.get())
         if Alumno:
-            alumno_editar_btn.configure(state="normal")
+            if not (str(conexion.obtenerColumnaEspecifica("usuarios", "perfil", "estatus", "1")) == "(\'Alumno\',)"):
+                alumno_editar_btn.configure(state="normal")
+                alumno_baja_btn.configure(state="normal")
             alumno_cancelar_btn.configure(state="normal")
-            alumno_baja_btn.configure(state="normal")
             listaCampos = ( alumno_id_entry,
                             alumno_nombre_entry,
                             alumno_apellidoP_entry,
@@ -888,7 +889,6 @@ def buscarAlumnos():
         bloquearCampos(True, listaCampos)
 
 def editarAlumno():
-    conexion.obtenerColumnaEspecifica("usuarios", "perfil", "status", "1")
     listaCampos = { alumno_nombre_entry,
                     alumno_apellidoP_entry,
                     alumno_apellidoM_entry,
