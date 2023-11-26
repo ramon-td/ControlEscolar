@@ -5,14 +5,13 @@ CREATE TABLE IF NOT EXISTS `alumnos` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `ap` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `am` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `correo` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
-  `estado` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
-  `fechanacimiento` date DEFAULT NULL,
-  `carrera_id` int DEFAULT NULL,
-  `grupo_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `carrera_id` (`carrera_id`),
-  KEY `grupo_id` (`grupo_id`)
+  `estado` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT "Jalisco",
+  `fechanacimiento` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `carrera_id` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `grupo_id` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT "grupo 1",
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 CREATE TABLE IF NOT EXISTS `usuarios` (
@@ -31,63 +30,39 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 CREATE TABLE IF NOT EXISTS `horario` (
   `id` int NOT NULL AUTO_INCREMENT,
   `turno` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
-  `hora` time DEFAULT NULL,
-  `grupo_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `grupo_id` (`grupo_id`)
+  `hora` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `grupo_id` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT "grupo 1",
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 CREATE TABLE IF NOT EXISTS `salon` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(10) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `edificio` char(1) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
-  `grupo_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `grupo_id` (`grupo_id`)
+  `grupo_id` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT "grupo 1",
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 CREATE TABLE IF NOT EXISTS `carrera` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `semestres` int DEFAULT NULL,
-  `grupo_id` int DEFAULT NULL,
-  `alumno_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `alumno_id` (`alumno_id`),
-  KEY `materia_id` (`grupo_id`) USING BTREE,
-  CONSTRAINT `FK_carrera_alumnos` FOREIGN KEY (`alumno_id`) REFERENCES `alumnos` (`carrera_id`)
+  `materias` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `grupo_id` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT "grupo 1",
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 CREATE TABLE IF NOT EXISTS `grupos` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
-  `fecha` date DEFAULT NULL,
-  `carrera_id` int DEFAULT NULL,
-  `materia_id` int DEFAULT NULL,
-  `maestro_id` int DEFAULT NULL,
-  `salon_id` int DEFAULT NULL,
-  `horario_id` int DEFAULT NULL,
-  `semestre` varchar(255) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `fecha` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `carrera_id` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `materia_id` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `salon_id` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `horario_id` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `semestre` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `maxalumnos` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_grupos_carrera` (`carrera_id`),
-  KEY `materia_id` (`materia_id`),
-  KEY `maestro_id` (`maestro_id`),
-  KEY `salon_id` (`salon_id`),
-  KEY `horario_id` (`horario_id`),
-  CONSTRAINT `FK_grupos_carrera` FOREIGN KEY (`carrera_id`) REFERENCES `carrera` (`grupo_id`),
-  CONSTRAINT `FK_grupos_horario` FOREIGN KEY (`horario_id`) REFERENCES `horario` (`grupo_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
-
-CREATE TABLE IF NOT EXISTS `grupos_salon` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `grupos_salon_id` int DEFAULT NULL,
-  `salon_grupos_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_grupos_salon_grupos` (`grupos_salon_id`),
-  KEY `FK_grupos_salon_salon` (`salon_grupos_id`),
-  CONSTRAINT `FK_grupos_salon_grupos` FOREIGN KEY (`grupos_salon_id`) REFERENCES `grupos` (`salon_id`),
-  CONSTRAINT `FK_grupos_salon_salon` FOREIGN KEY (`salon_grupos_id`) REFERENCES `salon` (`grupo_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 CREATE TABLE IF NOT EXISTS `maestros` (
@@ -97,11 +72,9 @@ CREATE TABLE IF NOT EXISTS `maestros` (
   `am` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `correo` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `carrera` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
-  `estudios` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
-  `grupo_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_maestros_grupos` (`grupo_id`),
-  CONSTRAINT `FK_maestros_grupos` FOREIGN KEY (`grupo_id`) REFERENCES `grupos` (`maestro_id`)
+  `materia` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `grupo_id` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT "grupo 1",
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 CREATE TABLE IF NOT EXISTS `materias` (
@@ -109,26 +82,31 @@ CREATE TABLE IF NOT EXISTS `materias` (
   `nombre` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `creditos` int DEFAULT NULL,
   `semestre` int DEFAULT NULL,
-  `carrera_id` int DEFAULT NULL,
-  `grupo_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `carrera_id` (`carrera_id`),
-  KEY `FK_materias_grupos` (`grupo_id`),
-  CONSTRAINT `FK_materias_grupos` FOREIGN KEY (`grupo_id`) REFERENCES `grupos` (`materia_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
-
-CREATE TABLE IF NOT EXISTS `materias_carrera` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `materias_carrera_id` int DEFAULT NULL,
-  `carrera_materia_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_materias_carrera_materias` (`materias_carrera_id`),
-  KEY `FK_materias_carrera_carrera` (`carrera_materia_id`),
-  CONSTRAINT `FK_materias_carrera_carrera` FOREIGN KEY (`carrera_materia_id`) REFERENCES `carrera` (`grupo_id`),
-  CONSTRAINT `FK_materias_carrera_materias` FOREIGN KEY (`materias_carrera_id`) REFERENCES `materias` (`carrera_id`)
+  `carrera_id` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `grupo_id` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT "grupo 1",
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 INSERT INTO `usuarios` (`idusuario`, `nombre`, `ap`, `am`, `usuario`, `password`, `perfil`) 
 VALUES ('1', 'Admin', NULL, NULL, 'Admin', 'AdminP', 'Admin'), 
 ('2', 'Maestro', NULL, NULL, 'Maestro', 'MaestroP', 'Maestro'),
-('3', 'Alumno', NULL, NULL, 'Alumno', 'AlumnoP', 'Alumno')
+('3', 'Alumno', NULL, NULL, 'Alumno', 'AlumnoP', 'Alumno');
+INSERT INTO `alumnos` (`id`, `nombre`, `ap`, `am`, `correo`, `estado`, `fechanacimiento`, `carrera_id`, `grupo_id`) 
+VALUES (NULL, 'Joan', 'Sebastian', NULL, 'joasbas@gmail.com', 'Jalisco', '12/07/1968', 'Computacion', 'grupo 1');
+INSERT INTO `carrera` (`id`, `nombre`, `semestres`, `materias`, `grupo_id`) VALUES (NULL, 'Computacion', '8', 'Corridos tumbados 1', 'grupo1');
+INSERT INTO `grupos` (`id`, `nombre`, `fecha`, `carrera_id`, `materia_id`, `salon_id`, `horario_id`, `semestre`, `maxalumnos`) 
+VALUES (NULL, 'grupo 1', NULL, 'Computacion', 'corridos tumbados 1', 'salon 1', '7:00:00', '1', '30');
+INSERT INTO `horario` (`id`, `turno`, `hora`, `grupo_id`) 
+VALUES (NULL, 'Matutino', '7:00:00', 'grupo 1'),
+(NULL, 'Matutino', '9:00:00', 'grupo 1'),
+(NULL, 'Matutino', '11:00:00', 'grupo 1'),
+(NULL, 'Vespertino', '13:00:00', 'grupo 1'),
+(NULL, 'Vespertino', '15:00:00', 'grupo 1'),
+(NULL, 'Vespertino', '18:00:00', 'grupo 1'),
+(NULL, 'Vespertino', '20:00:00', 'grupo 1');
+INSERT INTO `maestros` (`id`, `nombre`, `ap`, `am`, `correo`, `carrera`, `materia`, `grupo_id`) 
+VALUES (NULL, 'Valentin', 'Elizalde', NULL, NULL, 'Computacion', 'Corridos tumbados 1', 'grupo 1');
+INSERT INTO `materias` (`id`, `nombre`, `creditos`, `semestre`, `carrera_id`, `grupo_id`) 
+VALUES (NULL, 'Corridos tumbados 1', '8', '1', 'Computacion', 'grupo 1');
+INSERT INTO `salon` (`id`, `nombre`, `edificio`, `grupo_id`) VALUES (NULL, 'salon 1', '1', 'grupo 1');
+
