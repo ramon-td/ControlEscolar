@@ -14,6 +14,20 @@ class Conexion:
         except Error as ex:
             print("Error al intentar conexion: " + str(ex))
     
+    def usuarioActivo(self, id):
+        if self.conexion.is_connected():
+            try:
+                sentence = ""
+                cursor = self.conexion.cursor()
+                cursor.execute("UPDATE usuarios SET status = 0;")
+                self.conexion.commit()
+                cursor.execute("UPDATE usuarios SET status = 1 WHERE idusuario = \"" + str(id) + "\";")
+                self.conexion.commit()
+                return 0
+            except Error as ex:
+                print("Error al intentar conexion" + str(ex))
+                return 1
+
     def obtenerColumna(self, tabla, columna):
         if self.conexion.is_connected():
             try:
@@ -21,12 +35,30 @@ class Conexion:
                 cursor.execute("SELECT " + columna + " FROM " + tabla + ";")
                 resultados = cursor.fetchall()
                 
-                listaColumna = []
+                listaColumna = ()
                 for campo in resultados:
-                    # listaColumna.append(campo)
-                    listaColumna.append(str(campo)[1:-2])
+                    if str(campo)[1] == "\'":
+                        listaColumna += str(campo)[2:-3],
+                    else:
+                        listaColumna += str(campo)[1:-2],
 
                 return listaColumna
+            
+            except Error as ex:
+                print("Error al intentar conexion" + str(ex))
+
+    def obtenerColumnaEspecifica(self, tabla, columna, fila, que):
+        if self.conexion.is_connected():
+            try:
+                cursor = self.conexion.cursor()
+                # cursor.execute("SELECT " + columna + " FROM " + tabla + " WHERE " + fila + " = " + str(que) )
+                cursor.execute("SELECT idusuario FROM usuarios WHERE status = '1'")
+                resultados = cursor.fetchone()
+                # for campo in resultados: 
+                #     print(campo)
+                print("SELECT " + columna + " FROM " + tabla + " WHERE " + fila + " = \"" + que + "\";")
+                print(resultados)
+                return resultados
             
             except Error as ex:
                 print("Error al intentar conexion" + str(ex))
@@ -71,9 +103,9 @@ class Conexion:
             try:
                 sentence = ""
                 for key in objeto.items():
-                    sentence += key[0] + " = \"" + key[1] + "\","
+                    sentence += str(key[0]) + " = \"" + str(key[1]) + "\","
                 cursor = self.conexion.cursor()
-                cursor.execute("UPDATE " + tabla + " SET " + sentence[:-1] +  " WHERE " + columna + " = \"" + fila + "\";")
+                cursor.execute("UPDATE " + tabla + " SET " + sentence[:-1] +  " WHERE " + columna + " = \"" + str(fila) + "\";")
                 self.conexion.commit()
                 return 0
             except Error as ex:
@@ -89,7 +121,7 @@ class Conexion:
                 for key in objeto.keys():
                     keys += key + ","
                 for value in objeto.values():
-                    values += "\"" + value + "\","
+                    values += "\"" + str(value) + "\","
                 # print("INSERT INTO " + tabla + " (" + keys[:-1] +  ") VALUES (" + values[:-1] + ");")
                 cursor = self.conexion.cursor()
                 cursor.execute("INSERT INTO " + tabla + " (" + keys[:-1] +  ") VALUES (" + values[:-1] + ");")
