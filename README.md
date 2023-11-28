@@ -30,10 +30,10 @@ Falta comenzar con las demás ventanas y verificar que los widgets sean los adec
 Funcionando al 100 la función de editar y guardar usuarios con conexión a la BDD
 Replanteamiento y reimplementación de la clase controladora de objetos para mayor versatilidad
 
-27/11/2023  -Abel        
-Creo que ya quedó esta mamada
-
 26/11/2023    -Abel
 Acomodé el desmadre de la pestaña de grupos, funciona todo lo de buscar y las interacciones de 
 activar y rellenar campos y eso, falta la parte de guardar y toda la lógica que esto implica
 Falta pestaña de grupos
+
+27/11/2023  -Abel        
+Creo que ya quedó esta mamada
