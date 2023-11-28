@@ -365,8 +365,10 @@ grupo_id_entry  = tk.Entry(pestana_grupos, state="disabled")
 grupo_id_entry.configure(width=8, state="disabled")
 grupo_nombre_entry  = tk.Entry(pestana_grupos, state="disabled")
 grupo_nombre_entry.configure(width=30, state="disabled")
-grupo_fecha_entry  = tk.Entry(pestana_grupos, state="disabled")
-grupo_fecha_entry.configure(width=30, state="disabled")
+grupo_fecha_selection  = tk.StringVar(main)
+grupo_fecha_options  = conexion.obtenerColumna("horario", "turno")
+grupo_fecha_optionMenu  = tk.OptionMenu(pestana_grupos, grupo_fecha_selection, *grupo_fecha_options)
+grupo_fecha_optionMenu.configure(width=30, state="disabled")
 grupo_carrera_selection = tk.StringVar(main)
 grupo_carrera_options = conexion.obtenerColumna("carrera", "nombre")
 grupo_carrera_optionMenu  = tk.OptionMenu(pestana_grupos, grupo_carrera_selection, *grupo_carrera_options)
@@ -422,7 +424,7 @@ grupo_alumnos_label.grid(column=4, columnspan=1, row=6, padx=10, pady=10, sticky
 grupo_code_entry.grid(column=4, columnspan=2, row=1, padx=10, pady=10, sticky=tk.W)
 grupo_id_entry.grid(column=2, columnspan=1, row=2, padx=10, pady=10, sticky=tk.W)
 grupo_nombre_entry.grid(column=2, columnspan=2, row=3, padx=10, pady=10, sticky=tk.W)
-grupo_fecha_entry.grid(column=2, columnspan=2, row=4, padx=10, pady=10, sticky=tk.W)
+grupo_fecha_optionMenu.grid(column=2, columnspan=2, row=4, padx=10, pady=10, sticky=tk.W)
 grupo_carrera_optionMenu.grid(column=2, columnspan=2, row=5, padx=10, pady=10, sticky=tk.W)
 grupo_materia_optionMenu.grid(column=2, columnspan=2, row=6, padx=10, pady=10, sticky=tk.W)
 grupo_maestro_optionMenu.grid(column=2, columnspan=2, row=7, padx=10, pady=10, sticky=tk.W)
@@ -443,18 +445,18 @@ pestana_horario = ttk.Frame(pestanas)
 pestanas.add(pestana_horario, text="Horario")
 pestanas.tab(6, state="disabled")
 #- - - - - - - - - - - - - - - - - - - - - - - Entries y etiquetas - - - - - - - - - - - - - - - - - - - -
-horario_code_label = tk.Label(pestana_horario, text="Ingrese codigo de grupo: ")
+horario_code_label = tk.Label(pestana_horario, text="Ingrese codigo de horario: ")
 horario_id_label = tk.Label(pestana_horario, text="ID:")
 horario_turno_label = tk.Label(pestana_horario, text="Turno: ")
 horario_hora_label = tk.Label(pestana_horario, text="Hora: ")
 horario_code_entry = tk.Entry(pestana_horario)
 horario_id_entry = tk.Entry(pestana_horario, state="disabled")
 horario_turno_selection = tk.StringVar(main)
-horario_turno_options = conexion.obtenerColumna("horario", "turno")
+horario_turno_options = ("L - I", "M - J", "V", "S")
 horario_turno_optionMenu = tk.OptionMenu(pestana_horario, horario_turno_selection, *horario_turno_options)
 horario_turno_optionMenu.configure(state="disabled")
 horario_hora_selection = tk.StringVar(main)
-horario_hora_options = conexion.obtenerColumna("horario", "hora")
+horario_hora_options = ("7:00:00", "9:00:00", "11:00:00", "13:00:00", "15:00:00", "17:00:00", "19:00:00", "21:00:00")
 horario_hora_optionMenu = tk.OptionMenu(pestana_horario, horario_hora_selection, *horario_hora_options)
 horario_hora_optionMenu.configure(state="disabled")
 
@@ -501,14 +503,20 @@ salon_code_label = tk.Label(pestana_salon, text="Ingrese codigo de salón: ")
 salon_id_label = tk.Label(pestana_salon, text="ID:")
 salon_nombre_label = tk.Label(pestana_salon, text="Nombre Salon: ")
 salon_edificio_label = tk.Label(pestana_salon, text="Edificio: ")
+salon_aula_label = tk.Label(pestana_salon, text="Aula: ")
 salon_code_entry = tk.Entry(pestana_salon)
 salon_nombre_entry = tk.Entry(pestana_salon, state="disabled")
 salon_id_entry = tk.Entry(pestana_salon, state="disabled")
 
 salon_edificio_selection = tk.StringVar(main)
-salon_edificio_options = ("Edificio 1", "Edificio 2", "Edificio X")
+salon_edificio_options = ("Edificio 1", "Edificio 2", "Edificio 3", "Edificio Alpha", "Edificio Beta", "Edificio X")
 salon_edificio_optionMenu = tk.OptionMenu(pestana_salon, salon_edificio_selection, *salon_edificio_options)
 salon_edificio_optionMenu.configure(state="disabled")
+
+salon_aula_selection = tk.StringVar(main)
+salon_aula_options = ("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
+salon_aula_optionMenu = tk.OptionMenu(pestana_salon, salon_aula_selection, *salon_aula_options)
+salon_aula_optionMenu.configure(state="disabled")
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - Botones - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -536,9 +544,12 @@ salon_id_entry.grid(column=2, columnspan=2, row=1, padx=10, pady=10, sticky=tk.W
 salon_id_entry.configure(width=15)
 
 salon_edificio_label.grid(column=1, columnspan=1, row=3, padx=10, pady=10, sticky=tk.E)
-salon_edificio_optionMenu.grid(column=2, columnspan=1, row=3, padx=10, pady=10, sticky=tk.E)
-salon_edificio_optionMenu.configure(width=8)
+salon_edificio_optionMenu.grid(column=2, columnspan=2, row=3, padx=10, pady=10, sticky=tk.W)
+salon_edificio_optionMenu.configure(width=20)
 
+salon_aula_label.grid(column=1, columnspan=1, row=4, padx=10, pady=10, sticky=tk.E)
+salon_aula_optionMenu.grid(column=2, columnspan=1, row=4, padx=10, pady=10, sticky=tk.W)
+salon_aula_optionMenu.configure(width=8)
 
 
 salon_buscar_btn.grid(column=5, columnspan=1, row=0, padx=10, pady=10, sticky=tk.E)
@@ -1293,7 +1304,7 @@ def editarHorario():
     bloquearCampos(True, listaCamposBloquear)
 
 def cancelarHorario():
-    listaCampos = {horario_code_entry, horario_code_entry}
+    listaCampos = {horario_code_entry, horario_id_entry}
     listaCamposBloquear = {horario_nuevo_btn,
                            horario_buscar_btn,
                            horario_code_entry}
@@ -1313,11 +1324,11 @@ def guardarHorario():
     Horario = {"turno" : horario_turno_selection.get(),
                 "hora" : horario_hora_selection.get()}
     objeto = Conexion()
-    listaCampos = {horario_id_entry, horario_id_entry}
+    listaCampos = {horario_id_entry}
     if validarCampoNoVacio(listaCampos, 0):
         messagebox.showinfo(title="Operación exitosa", message= "Se ha editado el registro con exito"), cancelarHorario() if objeto.actualizarObjeto(Horario, "horario", "id", horario_id_entry.get()) == 0 else  messagebox.showerror(title="Error", message= "No se ha podido realizar la operación")
     else:
-        listaCampos = {horario_turno_selection, horario_hora_selection}
+        listaCampos = (horario_turno_selection, horario_hora_selection)
         if validarCampoNoVacio(listaCampos, 1):
             if objeto.insertarNuevoObjeto(Horario, "horario") == 0:
                 Horario = objeto.obtenerObjeto("horario", "hora", horario_hora_selection.get())
@@ -1479,8 +1490,11 @@ def buscarSalon():
             listaDatos = ("id", "nombre")
             llenarCampos(listaCampos, listaDatos, Salon)
             salon_edificio_optionMenu.configure(state="normal")
+            salon_aula_optionMenu.configure(state="normal")
             salon_edificio_selection.set(Salon.get("edificio"))
+            salon_aula_selection.set(Salon.get("aula"))
             salon_edificio_optionMenu.configure(state="disabled")
+            salon_aula_optionMenu.configure(state="disabled")
             return 0
         else:
             messagebox.showerror(title="No se encuentra", message= "No se encontró el código")
@@ -1509,7 +1523,8 @@ def editarSalon():
     listaOtros = {salon_editar_btn,
                   salon_cancelar_btn,
                   salon_guardar_btn,
-                  salon_edificio_optionMenu}
+                  salon_edificio_optionMenu,
+                  salon_aula_optionMenu}
     bloquearCampos(False, listaCampos)
     bloquearCampos(False, listaOtros)
     bloquearCampos(True, listaCamposBloquear)
@@ -1525,7 +1540,8 @@ def cancelarSalon():
                   salon_editar_btn,
                   salon_cancelar_btn,
                   salon_guardar_btn,
-                  salon_edificio_optionMenu}
+                  salon_edificio_optionMenu,
+                  salon_aula_optionMenu}
     bloquearCampos(False, listaCampos)
     limpiarCampos(listaCampos)
     bloquearCampos(True, listaCampos)
@@ -1534,7 +1550,8 @@ def cancelarSalon():
 
 def guardarSalon():
     Salon = {"nombre" : salon_nombre_entry.get(),
-             "edificio" : salon_edificio_selection.get()}
+             "edificio" : salon_edificio_selection.get(),
+             "aula" : salon_aula_selection.get()}
     objeto = Conexion()
     listaCampos = {salon_id_entry}
     if validarCampoNoVacio(listaCampos, 0):
@@ -1574,6 +1591,24 @@ def bajaSalon():
 #--------------------------------------------------------------------------------------------------------------
 
 #------------------------------------------------------Grupos---------------------------------------------------
+def validarGrupo(objeto):
+    conexion = Conexion()
+    ids = conexion.obtenerColumna("grupos", "id")
+    horarios = conexion.obtenerColumna("grupos", "horario")
+    fechas = conexion.obtenerColumna("grupos", "fecha")
+    for idgrupo, hora, fecha in zip(ids, horarios, fechas):
+        if objeto.get("horario") == hora:
+            if objeto.get("fecha") == fecha:
+                if (objeto.get("maestro") == str(conexion.obtenerColumnaEspecifica("grupos", "maestro", "id", idgrupo))[2:-3]):
+                    messagebox.showerror(title="Operación fallida", message="No puede agregar dos grupos al mismo tiempo con el mismo profesor")
+                    return False
+                elif (objeto.get("salon") == str(conexion.obtenerColumnaEspecifica("grupos", "salon", "id", idgrupo))[2:-3]):
+                    messagebox.showerror(title="Operación fallida", message="No puede agregar dos grupos al mismo tiempo en el mismo salon")
+                    return False
+                else:
+                    return True
+    return True
+
 def buscarGrupo():
     listaCampos = {grupo_code_entry}
     if validarCampoNoVacio(listaCampos, 0):
@@ -1585,9 +1620,8 @@ def buscarGrupo():
             grupo_baja_btn.configure(state="normal")
             listaCampos = ( grupo_id_entry,
                             grupo_nombre_entry,
-                            grupo_fecha_entry,
                             grupo_alumnos_entry)
-            listaDatos = ("id", "nombre", "fecha", "maxalumnos")
+            listaDatos = ("id", "nombre", "maxalumnos")
             llenarCampos(listaCampos, listaDatos, Grupo)
             grupo_carrera_optionMenu.configure(state="normal")
             grupo_materia_optionMenu.configure(state="normal")
@@ -1595,18 +1629,21 @@ def buscarGrupo():
             grupo_salon_optionMenu.configure(state="normal")
             grupo_horario_optionMenu.configure(state="normal")
             grupo_semestre_optionMenu.configure(state="normal")
+            grupo_fecha_optionMenu.configure(state="normal")
             grupo_carrera_selection.set(Grupo.get("carrera"))
             grupo_materia_selection.set(Grupo.get("materia"))
             grupo_maestro_selection.set(Grupo.get("maestro"))
             grupo_salon_selection.set(Grupo.get("salon"))
             grupo_horario_selection.set(Grupo.get("horario"))
             grupo_semestre_selection.set(Grupo.get("semestre"))
+            grupo_fecha_selection.set(Grupo.get("fecha"))
             grupo_carrera_optionMenu.configure(state="disabled")
             grupo_materia_optionMenu.configure(state="disabled")
             grupo_maestro_optionMenu.configure(state="disabled")
             grupo_salon_optionMenu.configure(state="disabled")
             grupo_horario_optionMenu.configure(state="disabled")
             grupo_semestre_optionMenu.configure(state="disabled")
+            grupo_fecha_optionMenu.configure(state="disabled")
             return 0
         else:
             messagebox.showerror(title="No se encuentra", message= "No se encontró el código")
@@ -1627,7 +1664,6 @@ def buscarGrupo():
 
 def editarGrupo():
     listaCampos = { grupo_nombre_entry,
-                    grupo_fecha_entry,
                     grupo_alumnos_entry}
     listaCamposBloquear = {grupo_editar_btn,
                            grupo_nuevo_btn,
@@ -1642,7 +1678,8 @@ def editarGrupo():
                   grupo_maestro_optionMenu,
                   grupo_salon_optionMenu,
                   grupo_horario_optionMenu,
-                  grupo_semestre_optionMenu}
+                  grupo_semestre_optionMenu,
+                  grupo_fecha_optionMenu}
     bloquearCampos(False, listaCampos)
     bloquearCampos(False, listaOtros)
     bloquearCampos(True, listaCamposBloquear)
@@ -1650,8 +1687,7 @@ def editarGrupo():
 def cancelarGrupo():
     listaCampos = {grupo_code_entry, 
                     grupo_id_entry,
-                    grupo_nombre_entry, 
-                    grupo_fecha_entry,
+                    grupo_nombre_entry,
                     grupo_alumnos_entry}
     listaCamposBloquear = {grupo_nuevo_btn,
                            grupo_buscar_btn,
@@ -1665,6 +1701,7 @@ def cancelarGrupo():
                   grupo_maestro_optionMenu,
                   grupo_salon_optionMenu,
                   grupo_horario_optionMenu,
+                  grupo_fecha_optionMenu,
                   grupo_semestre_optionMenu}
     bloquearCampos(False, listaCampos)
     limpiarCampos(listaCampos)
@@ -1673,25 +1710,38 @@ def cancelarGrupo():
     bloquearCampos(False, listaCamposBloquear)
 
 def guardarGrupo():
-    Grupo = {"nombre" : grupo_nombre_entry.get(),
-             "edificio" : grupo_edificio_selection.get()}
+    Grupo = {"nombre"       : grupo_nombre_entry.get(),
+             "fecha"        : grupo_fecha_selection.get(),
+             "carrera"      : grupo_carrera_selection.get(),
+             "materia"      : grupo_materia_selection.get(),
+             "maestro"      : grupo_maestro_selection.get(),
+             "salon"        : grupo_salon_selection.get(),
+             "horario"      : grupo_horario_selection.get(),
+             "semestre"     : grupo_semestre_selection.get(),
+             "maxalumnos"   : grupo_alumnos_entry.get()}
     objeto = Conexion()
     listaCampos = {grupo_id_entry}
     if validarCampoNoVacio(listaCampos, 0):
-        messagebox.showinfo(title="Operación exitosa", message= "Se ha editado el registro con exito"), cancelarGrupo() if objeto.actualizarObjeto(Grupo, "grupos", "id", int(grupo_id_entry.get())) == 0 else  messagebox.showerror(title="Error", message= "No se ha podido realizar la operación")
-    else:
-        listaCampos = {grupo_nombre_entry}
+        listaCampos = (grupo_nombre_entry, grupo_fecha_selection, grupo_carrera_selection, grupo_materia_selection, grupo_maestro_selection, grupo_salon_selection, grupo_horario_selection, grupo_semestre_selection, grupo_alumnos_entry)
         if validarCampoNoVacio(listaCampos, 1):
-            if objeto.insertarNuevoObjeto(Grupo, "grupos") == 0:
-                Grupo = objeto.obtenerObjeto("grupos", "nombre", grupo_nombre_entry.get())
-                messagebox.showinfo(title="Operación exitosa", message= "Se ha agregado el registro con exito\nEl ID del nuevo Grupo es: " + str(Grupo.get("id")))
-                cancelarGrupo() 
-                grupo_code_entry.configure(state="normal")
-                grupo_code_entry.delete(0, tk.END)
-                grupo_code_entry.insert(0, Grupo.get("id"))
-                buscarGrupo()
-            else:  
-                messagebox.showerror(title="Error", message= "No se ha podido agregar el registro")
+            objeto.eliminarObjeto("grupos", str(grupo_id_entry.get()), "id")
+            if validarGrupo(Grupo):
+                Grupo["id"] = grupo_id_entry.get()
+                messagebox.showinfo(title="Operación exitosa", message= "Se ha editado el registro con exito"), cancelarGrupo() if objeto.insertarNuevoObjeto(Grupo, "grupos") == 0 else  messagebox.showerror(title="Error", message= "No se ha podido realizar la operación")
+    else:
+        listaCampos = (grupo_nombre_entry, grupo_fecha_selection, grupo_carrera_selection, grupo_materia_selection, grupo_maestro_selection, grupo_salon_selection, grupo_horario_selection, grupo_semestre_selection, grupo_alumnos_entry)
+        if validarCampoNoVacio(listaCampos, 1):
+            if validarGrupo(Grupo):
+                if objeto.insertarNuevoObjeto(Grupo, "grupos") == 0:
+                    Grupo = objeto.obtenerObjeto("grupos", "nombre", grupo_nombre_entry.get())
+                    messagebox.showinfo(title="Operación exitosa", message= "Se ha agregado el registro con exito\nEl ID del nuevo Grupo es: " + str(Grupo.get("id")))
+                    cancelarGrupo() 
+                    grupo_code_entry.configure(state="normal")
+                    grupo_code_entry.delete(0, tk.END)
+                    grupo_code_entry.insert(0, Grupo.get("id"))
+                    buscarGrupo()
+                else:  
+                    messagebox.showerror(title="Error", message= "No se ha podido agregar el registro")
 
 def nuevoGrupo():
     cancelarGrupo()
