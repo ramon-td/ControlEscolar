@@ -19,9 +19,9 @@ class Conexion:
             try:
                 sentence = ""
                 cursor = self.conexion.cursor()
-                cursor.execute("UPDATE usuarios SET status = 0;")
+                cursor.execute("UPDATE usuarios SET estatus = 0;")
                 self.conexion.commit()
-                cursor.execute("UPDATE usuarios SET status = 1 WHERE idusuario = \"" + str(id) + "\";")
+                cursor.execute("UPDATE usuarios SET estatus = 1 WHERE idusuario = \"" + str(id) + "\";")
                 self.conexion.commit()
                 return 0
             except Error as ex:
@@ -51,12 +51,12 @@ class Conexion:
         if self.conexion.is_connected():
             try:
                 cursor = self.conexion.cursor()
-                # cursor.execute("SELECT " + columna + " FROM " + tabla + " WHERE " + fila + " = " + str(que) )
-                cursor.execute("SELECT idusuario FROM usuarios WHERE status = '1'")
+                cursor.execute("SELECT " + columna + " FROM " + tabla + " WHERE " + fila + " = " + str(que) )
+                # cursor.execute("SELECT idusuario FROM usuarios WHERE estatus = 1")
                 resultados = cursor.fetchone()
                 # for campo in resultados: 
                 #     print(campo)
-                print("SELECT " + columna + " FROM " + tabla + " WHERE " + fila + " = \"" + que + "\";")
+                # print("SELECT " + columna + " FROM " + tabla + " WHERE " + fila + " = \"" + que + "\";")
                 print(resultados)
                 return resultados
             
