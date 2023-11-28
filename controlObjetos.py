@@ -17,7 +17,6 @@ class Conexion:
     def usuarioActivo(self, id):
         if self.conexion.is_connected():
             try:
-                sentence = ""
                 cursor = self.conexion.cursor()
                 cursor.execute("UPDATE usuarios SET estatus = 0;")
                 self.conexion.commit()
@@ -27,6 +26,40 @@ class Conexion:
             except Error as ex:
                 print("Error al intentar conexion" + str(ex))
                 return 1
+    def obtenerTablaCompleta(self, tabla):
+        if self.conexion.is_connected():
+            try:
+                listaObjetos = []
+                Objeto = {}
+                cursor = self.conexion.cursor()
+                cursor.execute("SELECT * FROM " + tabla + ";")
+                resultados = cursor.fetchall()
+                cursor.execute("SHOW COLUMNS FROM " + tabla + ";")
+                QueryInfo = cursor.fetchall()
+
+                data = []
+                key = []
+                
+                if resultados:
+                    for row in resultados:
+                        for x in range(len(row)):
+                            if row[x] is None:
+                                data.append("")
+                            else:
+                                data.append(row[x])
+                        for row in QueryInfo:
+                            key.append(row[0])
+
+                        for x in range(len(key)):
+                            Objeto.setdefault(key[x], data[x])
+                        listaObjetos.append(Objeto)
+                        Objeto = {}
+                        data = []
+                        key = []
+
+            except Error as ex:
+                print("Error al intentar conexion" + str(ex))
+        return listaObjetos
 
     def obtenerColumna(self, tabla, columna):
         if self.conexion.is_connected():

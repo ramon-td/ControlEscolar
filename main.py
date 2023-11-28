@@ -1,4 +1,6 @@
 import tkinter as tk
+import os
+import sys
 
 from tkinter import messagebox, ttk
 from controlObjetos import Conexion
@@ -672,6 +674,7 @@ pestana_carrera.columnconfigure(6, weight=1)
 
 #======================================================FUNCIONES================================================
 #----------------------------------------------Funcionamiento general-------------------------------------------
+
 def dormirPestanas(code): #Se introduce un binario que indica que pestañas dormir y cuáles mantener despiertas
     for x in range(0, len(code)):
         if code[x] == '0':
@@ -1782,11 +1785,43 @@ def bajaGrupo():
                                                                 popupWindow.destroy(), cancelarGrupo()]).grid(column=1, row=1, padx=10, pady=10)
 
 #--------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------Planeación-------------------------------------------------
+def llenarPlaneacion():
+    conexion = Conexion()
+    listaDiccionarios = [{}]
+    listaDiccionarios = conexion.obtenerTablaCompleta("grupos")
+    columna = 0
+    fila = 0
+    texto = ""
+    pestana_planeacion.columnconfigure(6, weight=1)
+    pestana_planeacion.rowconfigure(3, weight=2)
+    for registro in listaDiccionarios:
+        # print(registro.values())
+        texto = "Grupo:\t" + registro.get("nombre")
+        texto += "\nSalon:\t" + registro.get("salon")
+        texto += "\nMateria:\t" + registro.get("materia")
+        texto += "\nMaestro:\t" + registro.get("maestro")
+        texto += "\nDías:\t" + registro.get("fecha")
+        texto += "\nHorario:\t" + registro.get("horario")
+        if columna < 6:
+            if columna %2 != 0:
+                tk.Label(pestana_planeacion, text=texto, bg="#CCCCCC", justify=tk.LEFT).grid(column=columna, row=fila, sticky=tk.W)
+            else:
+                tk.Label(pestana_planeacion, text=texto, justify=tk.LEFT).grid(column=columna, row=fila)
+            columna+=1
+        else:
+            fila +=1
+            columna = 0
+            tk.Label(pestana_planeacion, text=texto, justify=tk.LEFT).grid(column=columna, row=fila)
+
+
+#--------------------------------------------------------------------------------------------------------------
 
 #===============================================================================================================
 
 # dormirPestanas("1000000000")
 dormirPestanas("1111111111")
-pestanas.select(pestana_grupos)
+llenarPlaneacion()
+pestanas.select(pestana_planeacion)
 
 main.mainloop()
