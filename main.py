@@ -1,4 +1,6 @@
 import tkinter as tk
+import os
+import sys
 
 from tkinter import messagebox, ttk
 from controlObjetos import Conexion
@@ -672,6 +674,7 @@ pestana_carrera.columnconfigure(6, weight=1)
 
 #======================================================FUNCIONES================================================
 #----------------------------------------------Funcionamiento general-------------------------------------------
+
 def dormirPestanas(code): #Se introduce un binario que indica que pestañas dormir y cuáles mantener despiertas
     for x in range(0, len(code)):
         if code[x] == '0':
@@ -817,6 +820,7 @@ def cancelarUsuario():
                   user_perfil_optionMenu,
                   user_cancelar_btn,
                   user_guardar_btn}
+    user_perfil_selection.set("")
     bloquearCampos(False, listaCampos)
     limpiarCampos(listaCampos)
     bloquearCampos(True, listaCampos)
@@ -955,6 +959,9 @@ def cancelarAlumno():
                   alumno_carrera_optionMenu,
                   alumno_cancelar_btn,
                   alumno_guardar_btn}
+    alumno_estado_selection.set("")
+    alumno_carrera_selection.set("")
+    alumno_grupo_selection.set("")
     bloquearCampos(False, listaCampos)
     limpiarCampos(listaCampos)
     bloquearCampos(True, listaCampos)
@@ -1089,6 +1096,9 @@ def cancelarMaestro():
                   maestro_grupo_optionMenu,
                   maestro_cancelar_btn,
                   maestro_guardar_btn}
+    maestro_carrera_selection.set("")
+    maestro_materia_selection.set("")
+    maestro_grupo_selection.set("")
     bloquearCampos(False, listaCampos)
     limpiarCampos(listaCampos)
     bloquearCampos(True, listaCampos)
@@ -1209,6 +1219,7 @@ def cancelarMateria():
                   materia_carrera_optionMenu,
                   materia_cancelar_btn,
                   materia_guardar_btn}
+    materia_carrera_selection.set("")
     bloquearCampos(False, listaCampos)
     limpiarCampos(listaCampos)
     bloquearCampos(True, listaCampos)
@@ -1314,6 +1325,8 @@ def cancelarHorario():
                   horario_hora_optionMenu,
                   horario_cancelar_btn,
                   horario_guardar_btn}
+    horario_turno_selection.set("")
+    horario_hora_selection.set("")
     bloquearCampos(False, listaCampos)
     limpiarCampos(listaCampos)
     bloquearCampos(True, listaCampos)
@@ -1427,6 +1440,7 @@ def cancelarCarrera():
                   carrera_cancelar_btn,
                   carrera_guardar_btn,
                   carrera_materia_optionMenu}
+    carrera_materia_selection.set("")
     bloquearCampos(False, listaCampos)
     limpiarCampos(listaCampos)
     bloquearCampos(True, listaCampos)
@@ -1542,6 +1556,8 @@ def cancelarSalon():
                   salon_guardar_btn,
                   salon_edificio_optionMenu,
                   salon_aula_optionMenu}
+    salon_edificio_selection.set("")
+    salon_aula_selection.set("")
     bloquearCampos(False, listaCampos)
     limpiarCampos(listaCampos)
     bloquearCampos(True, listaCampos)
@@ -1703,6 +1719,13 @@ def cancelarGrupo():
                   grupo_horario_optionMenu,
                   grupo_fecha_optionMenu,
                   grupo_semestre_optionMenu}
+    grupo_carrera_selection.set("")
+    grupo_materia_selection.set("")
+    grupo_maestro_selection.set("")
+    grupo_salon_selection.set("")
+    grupo_horario_selection.set("")
+    grupo_semestre_selection.set("")
+    grupo_fecha_selection.set("")
     bloquearCampos(False, listaCampos)
     limpiarCampos(listaCampos)
     bloquearCampos(True, listaCampos)
@@ -1762,11 +1785,43 @@ def bajaGrupo():
                                                                 popupWindow.destroy(), cancelarGrupo()]).grid(column=1, row=1, padx=10, pady=10)
 
 #--------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------Planeación-------------------------------------------------
+def llenarPlaneacion():
+    conexion = Conexion()
+    listaDiccionarios = [{}]
+    listaDiccionarios = conexion.obtenerTablaCompleta("grupos")
+    columna = 0
+    fila = 0
+    texto = ""
+    pestana_planeacion.columnconfigure(6, weight=1)
+    pestana_planeacion.rowconfigure(3, weight=2)
+    for registro in listaDiccionarios:
+        # print(registro.values())
+        texto = "Grupo:\t" + registro.get("nombre")
+        texto += "\nSalon:\t" + registro.get("salon")
+        texto += "\nMateria:\t" + registro.get("materia")
+        texto += "\nMaestro:\t" + registro.get("maestro")
+        texto += "\nDías:\t" + registro.get("fecha")
+        texto += "\nHorario:\t" + registro.get("horario")
+        if columna < 6:
+            if columna %2 != 0:
+                tk.Label(pestana_planeacion, text=texto, bg="#CCCCCC", justify=tk.LEFT).grid(column=columna, row=fila, sticky=tk.W)
+            else:
+                tk.Label(pestana_planeacion, text=texto, justify=tk.LEFT).grid(column=columna, row=fila)
+            columna+=1
+        else:
+            fila +=1
+            columna = 0
+            tk.Label(pestana_planeacion, text=texto, justify=tk.LEFT).grid(column=columna, row=fila)
+
+
+#--------------------------------------------------------------------------------------------------------------
 
 #===============================================================================================================
 
 # dormirPestanas("1000000000")
 dormirPestanas("1111111111")
-pestanas.select(pestana_grupos)
+llenarPlaneacion()
+pestanas.select(pestana_planeacion)
 
 main.mainloop()
