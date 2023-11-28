@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `horario` (
 
 CREATE TABLE IF NOT EXISTS `salon` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(10) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `nombre` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
   `edificio` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT "Edificio 1",
   `aula` varchar(50) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT "1",
   PRIMARY KEY (`id`)
